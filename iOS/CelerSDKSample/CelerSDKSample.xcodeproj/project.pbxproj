@@ -13,6 +13,7 @@
 		AE02582F2167CE190047FEF2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE02582E2167CE190047FEF2 /* Assets.xcassets */; };
 		AE0258322167CE190047FEF2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AE0258302167CE190047FEF2 /* LaunchScreen.storyboard */; };
 		AE02583A2167CE400047FEF2 /* Mobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE0258392167CE400047FEF2 /* Mobile.framework */; };
+		AE552268216AABC900C770BD /* KeyStoreHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE552267216AABC900C770BD /* KeyStoreHelper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		AE0258312167CE190047FEF2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AE0258332167CE190047FEF2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AE0258392167CE400047FEF2 /* Mobile.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Mobile.framework; sourceTree = "<group>"; };
+		AE552267216AABC900C770BD /* KeyStoreHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyStoreHelper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +60,7 @@
 		AE0258262167CE180047FEF2 /* CelerSDKSample */ = {
 			isa = PBXGroup;
 			children = (
+				AE552267216AABC900C770BD /* KeyStoreHelper.swift */,
 				AE0258272167CE180047FEF2 /* AppDelegate.swift */,
 				AE0258292167CE180047FEF2 /* ViewController.swift */,
 				AE02582B2167CE180047FEF2 /* Main.storyboard */,
@@ -141,6 +144,7 @@
 			files = (
 				AE02582A2167CE180047FEF2 /* ViewController.swift in Sources */,
 				AE0258282167CE180047FEF2 /* AppDelegate.swift in Sources */,
+				AE552268216AABC900C770BD /* KeyStoreHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
