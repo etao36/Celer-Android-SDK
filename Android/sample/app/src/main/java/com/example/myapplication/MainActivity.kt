@@ -2,7 +2,7 @@ package com.example.myapplication
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
+import kotlinx.android.synthetic.main.activity_main.*
 import network.celer.mobile.Client
 import network.celer.mobile.Mobile
 import java.io.File
@@ -32,24 +32,24 @@ class MainActivity : AppCompatActivity() {
         passwordStr = KeyStoreHelper().getPassword()
 
 
-        Log.e("GoLog", "keyStoreString: ${keyStoreString}")
-        Log.e("GoLog", "passwordStr: ${passwordStr}")
+        addLog("keyStoreString: ${keyStoreString}")
+        addLog("passwordStr: ${passwordStr}")
 
         val profileStr = getString(R.string.cprofile, datadir)
 
-        // get Celer Client
+        // Init Celer Client
         try {
             client = Mobile.newClient(keyStoreString, passwordStr, profileStr)
         } catch(e: Exception) {
-            Log.e("GoLog", "Error: ${e.localizedMessage}")
+            addLog("Init Celer Client Error: ${e.localizedMessage}")
         }
 
-        // join celer network
+        // Join Celer Network
         try {
             client?.joinCeler("0x0", clientSideDepositAmount, serverSideDepositAmount)
-            print("Balance: ${client?.getBalance(1)?.available}")
+            addLog("Balance: ${client?.getBalance(1)?.available}")
         } catch (e: Exception) {
-            Log.e("GoLog", "Error: ${e.localizedMessage}")
+            addLog("Join Celer Network Error: ${e.localizedMessage}")
 
         }
 
@@ -57,17 +57,16 @@ class MainActivity : AppCompatActivity() {
         try {
             receiverAddr = "0x2718aaa01fc6fa27dd4d6d06cc569c4a0f34d399"
             val hasJoin = client?.hasJoinedCeler(receiverAddr)
-            print(hasJoin)
+            addLog("hasJoin: $hasJoin")
         } catch (e: Exception) {
-            Log.e("GoLog", "Error: ${e.localizedMessage}")
-
+            addLog("check Error: ${e.localizedMessage}")
         }
 
         // send cETH to an address
         try {
             client?.sendPay(receiverAddr, transferAmount)
         } catch (e: Exception) {
-            Log.e("GoLog", "Error: ${e.localizedMessage}")
+            addLog("send cETH Error: ${e.localizedMessage}")
 
         }
     }
@@ -79,4 +78,10 @@ class MainActivity : AppCompatActivity() {
         }
         datadir = generaFile.path
     }
+
+
+    fun addLog(txt: String?) {
+        logtext.append("\n" + txt)
+    }
+
 }
