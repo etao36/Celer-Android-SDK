@@ -80,7 +80,7 @@ Celer mobile client is your starting point to call almost all the methods you ne
 Joining Celer means entering the off-chain world. To join celer, you need to deposit a certain amount of tokens from your on-chain wallet to Celer's state channel, to make sure that you have some off-chain balance to send to others. Meanwhile, server should also deposit certain amount of tokens to the same channel.  
 
 Remember that we have already generated new account in the first step, this account does not have any on-chain balance yet.
-You can transfer some money from your existing account if you already have some tokens. If you want to get some free testnet tokens, here is a quick tutorial to get free ethers on Ropsten:
+You can transfer some balance from your existing account if you already have some tokens. If you want to get some free testnet tokens, here is a quick tutorial to get free ethers on Ropsten:
 
 * Get some free ETH:
 Open this link in your browser https://apitester.com/
