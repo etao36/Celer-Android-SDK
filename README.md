@@ -43,7 +43,7 @@ Both the keyStoreString and the password will be used to create Celer client in 
 
 ### Step 2. Get Celer profile
 
-To connect to an off-chain service provider, you need a server profile which is provided by this off-chain provider. 
+To connect to an off-chain service provider, you need a server profile which is provided by this off-chain service provider. 
 For your quick-test convenience, we have prepared everything you need. You can simply use the hard-coded profile in the sample project. “StoreDir” tells the SDK where to cache the data locally on your device. 
 
 ```kotlin
