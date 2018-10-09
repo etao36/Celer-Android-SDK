@@ -105,9 +105,11 @@ If this process is successful, you will see the balance in the log. A general fa
 
 Joining Celer takes some time because it involves some on-chain transactions. The joinCeler function returns a channel id. If you see this channel id, that means your channel is ready to use.  
 
-### Step 5. Send transaction
+Congratulations, you are in the off-chain world.
 
-Now that you have opened the channel, and you are in the off-chain world. You are able to send some off-chain Ether to someone who has also joined Celer.
+### Step 5. Send off-chain payment
+
+Now that you have opened the channel, you are able to send some off-chain Ether to someone who has also joined Celer.
 
 How do you know that an address has already joined Celer like youself?
 
