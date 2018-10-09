@@ -36,7 +36,7 @@ We have a helper to quickly generate wallets for you. If you already have an acc
 KeyStoreHelper will create a new ethereum account (wallet).
 
 ```kotlin
-keyStoreString = KeyStoreHelper().getKeyStoreString(this)
+val keyStoreString = KeyStoreHelper().getKeyStoreString(this)
 password = KeyStoreHelper().getPassword()
 ```
 Both the keyStoreString and the password will be used to create Celer client in step 3.
@@ -70,7 +70,7 @@ From Step 1 and step 2, we got 3 parameters: keyStoreString, password, profile S
 Then we can create a Celer mobile client like this:
 
 ```kotlin
-client = Mobile.newClient(keyStoreString, passwordString, profileString)
+val client = Mobile.newClient(keyStoreString, passwordString, profileString)
 ```
 
 Celer mobile client is your starting point to call almost all the methods you need in Celer SDK. 
@@ -84,6 +84,8 @@ You can transfer some money from your existing account if you already have some 
 
 * Get some free ETH:
 https://apitester.com/
+![Enter URL](https://s3.us-east-2.amazonaws.com/celer-mobile/Screen+Shot+2018-10-08+at+11.05.22+AM.png)
+
 
 * Check your balance on Ropsten:
 https://ropsten.etherscan.io/address/0xd3e03fdd15d3860da8e897779388412a7f7125e8
@@ -100,7 +102,7 @@ try {
 }
 ```
 
-Here, “0x0” represents the Ether token. 
+Here, “0x0” represents the Ether token. If you need to use ERC20 tokens, please put the contract address instead.
 
 If this process is successful, you will see the balance in the log. A general failure in this process is “Insufficient fund to join celer”, it means that you need to make sure the wallet has enough on-chain balance before joining Celer.
 
@@ -117,7 +119,7 @@ How do you know that an address has already joined Celer like youself?
 ```kotlin
 // check if an address has joined Celer Network
 try {
-   receiverAddr = "0x2718aaa01fc6fa27dd4d6d06cc569c4a0f34d399"
+   val receiverAddr = "0x2718aaa01fc6fa27dd4d6d06cc569c4a0f34d399"
    val hasJoined = client?.hasJoinedCeler(receiverAddress)
    addLog("hasJoined: $hasJoined")
 } catch (e: Exception) {
