@@ -43,7 +43,7 @@ Both the keyStoreString and the password will be used to create Celer client in 
 
 ### Step 2. Get Celer profile
 
-To connect to an offc-hain service provider, we need a server profile which is provided by this off-chain provider. You can use the hard-coded profile inside the sample application directly. We have prepared everything you need. To use Celer SDK in application, we will generate files inside devices. “StoreDir” means location of generated files. 
+To connect to an offc-hain service provider, we need a server profile which is provided by this off-chain provider. You can use the hard-coded profile inside the sample application directly. We have prepared everything you need. “StoreDir” tells the SDK where to cache the data locally on your device. 
 
 ```kotlin
 val profile = getString(R.string.cprofile, datadir)
