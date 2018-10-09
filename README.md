@@ -83,12 +83,19 @@ Remember that we have already generated new account in the first step, this acco
 You can transfer some money from your existing account if you already have some tokens. If you want to get some free testnet tokens, here is a quick tutorial to get free ethers on Ropsten:
 
 * Get some free ETH:
-https://apitester.com/
+Open this link in your browser https://apitester.com/
+Put https://faucet.metamask.io/ in the URL field, and choose http POST method.
 ![Enter URL](https://s3.us-east-2.amazonaws.com/celer-mobile/Screen+Shot+2018-10-08+at+11.05.22+AM.png)
 
+Put the wallet address in the post data field:
+![Enter Address](https://s3.us-east-2.amazonaws.com/celer-mobile/Screen+Shot+2018-10-09+at+11.10.25+AM.png)
+
+Click the "Test" button. Metamask will give you 1 ETH. You can see in the http response the transacton id. 
 
 * Check your balance on Ropsten:
 https://ropsten.etherscan.io/address/0xd3e03fdd15d3860da8e897779388412a7f7125e8
+
+It may take a while. Please refresh the above link till you see that the balance is no longer in "pending" status.
 
 Once you have enough balance, you are good to go with this API call:
 
