@@ -93,7 +93,8 @@ Put the wallet address in the post data field:
 Click the "Test" button. Metamask will give you 1 ETH. You can see in the http response the transacton id. 
 
 * Check your balance on Ropsten:
-https://ropsten.etherscan.io/address/[you wallet address]
+https://ropsten.etherscan.io/address/ Append this URL with your wallet address.
+
 For example:
 https://ropsten.etherscan.io/address/0x9f6b03cb6d8ab8239cf1045ab28b9df43dfcc823
 
