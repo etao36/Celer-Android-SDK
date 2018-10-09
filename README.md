@@ -1,4 +1,4 @@
-# MobileSample
+# Android SDK 
 # Java doc
 https://celer-network.github.io/AndroidApp/index.html
 # Hackathon doc
