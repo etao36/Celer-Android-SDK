@@ -43,7 +43,8 @@ Both the keyStoreString and the password will be used to create Celer client in 
 
 ### Step 2. Get Celer profile
 
-To connect to an offc-hain service provider, we need a server profile which is provided by this off-chain provider. You can use the hard-coded profile inside the sample application directly. We have prepared everything you need. “StoreDir” tells the SDK where to cache the data locally on your device. 
+To connect to an off-chain service provider, you need a server profile which is provided by this off-chain provider. 
+For your quick-test convenience, we have prepared everything you need. You can simply use the hard-coded profile in the sample project. “StoreDir” tells the SDK where to cache the data locally on your device. 
 
 ```kotlin
 val profile = getString(R.string.cprofile, datadir)
@@ -64,15 +65,15 @@ From the code ,you can see that the profile is a json String for creating Celer 
 
 ### Step 3. Create a Celer client
 
-From Step 1 and step 2, we got three params: keyStoreString, password, profile String.
+From Step 1 and step 2, we got 3 parameters: keyStoreString, password, profile String.
 
 Then we can create a Celer mobile client like this:
 
 ```kotlin
-client = Mobile.newClient(keyStoreString, passwordStr, profileStr)
+client = Mobile.newClient(keyStoreString, passwordString, profileString)
 ```
 
-Celer mobile client has all the methods you need in Celer SDK. 
+Celer mobile client is your starting point to call almost all the methods you need in Celer SDK. 
 
 ### Step 4. Join Celer Network
 
