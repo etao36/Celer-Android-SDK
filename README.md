@@ -29,24 +29,27 @@ Implement the following code on your "send" button click event or UI swipe event
 
 ## Get started
 
-### Step 1. GetkeyStoreString with password of  an ethereum wallet. 
+### Step 1. Generate a new Ethereum account (wallet)
+
+We have a helper to quickly generate wallets for you. If you already have an account or a wallet, you don't need to use our helper. Alternatively, you can use whatever wallet generation tools you like. 
+
+KeyStoreHelper will create a new ethereum account (wallet).
 
 ```kotlin
 keyStoreString = KeyStoreHelper().getKeyStoreString(this)
 password = KeyStoreHelper().getPassword()
 ```
-
-KeyStoreHelper will create a new ethereum account(wallet). This account will be used to create Celer Client.
+Both the keyStoreString and the password will be used to create Celer client in step 3.
 
 ### Step 2. Get Celer profile
 
-To connect to an offc-hain service provider, we need a server configuration file which is provided by this off-chain provider. You can use the hard-coded profile inside the sample application directly. We have prepared everything you need. To use Celer SDK in application, we will generate files inside devices. “StoreDir” means location of generated files. 
+To connect to an offc-hain service provider, we need a server profile which is provided by this off-chain provider. You can use the hard-coded profile inside the sample application directly. We have prepared everything you need. To use Celer SDK in application, we will generate files inside devices. “StoreDir” means location of generated files. 
 
 ```kotlin
 val profile = getString(R.string.cprofile, datadir)
 ```
 
-From the code ,you can see the profile is a json string for create celer client
+From the code ,you can see that the profile is a json String for creating Celer client.
 
 ```json
 {"ETHInstance": "wss://ropsten.infura.io/ws",
@@ -59,7 +62,7 @@ From the code ,you can see the profile is a json string for create celer client
  "HTLRegistryAddr": "a41bf533110e0b778f6757e04cf7c6d2a8e294b1"}
 ```
 
-### Step 3. Create Celer mobile client
+### Step 3. Create a Celer client
 
 From Step 1 and step 2, we got three params: keyStoreString, password, profile String.
 
