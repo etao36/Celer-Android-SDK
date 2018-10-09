@@ -29,7 +29,7 @@ Implement the following code on your "send" button click event or UI swipe event
 
 ## Get started
 
-### Step 1. Generate a new Ethereum account (wallet)
+### Step 1. Prepare an Ethereum account (wallet)
 
 We have a helper to quickly generate wallets for you. If you already have an account or a wallet, you don't need to use our helper. Alternatively, you can use whatever wallet generation tools you like. 
 
