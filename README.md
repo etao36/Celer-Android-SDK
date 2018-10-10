@@ -88,7 +88,7 @@ Put https://faucet.metamask.io/ in the URL field, and choose http POST method.
 ![Enter URL](https://s3.us-east-2.amazonaws.com/celer-mobile/Screen+Shot+2018-10-08+at+11.05.22+AM.png)
 
 Put the wallet address in the post data field:
-![Enter Address](https://s3.us-east-2.amazonaws.com/celer-mobile/Screen+Shot+2018-10-09+at+11.10.25+AM.png)
+![Enter Address](https://s3.us-east-2.amazonaws.com/celer-mobile/Screen+Shot+2018-10-09+at+5.54.12+PM.png)
 
 Click the "Test" button. Metamask will give you 1 ETH. You can see in the http response the transacton id. 
 
