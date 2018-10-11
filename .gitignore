@@ -1,4 +1,9 @@
-
-\.DS_Store
-
-iOS/CelerSDKSample/CelerSDKSample\.xcodeproj/project\.xcworkspace/xcuserdata/jinyaoli\.xcuserdatad/UserInterfaceState\.xcuserstate
+*.iml
+.gradle
+/local.properties
+/.idea
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+*.apk
