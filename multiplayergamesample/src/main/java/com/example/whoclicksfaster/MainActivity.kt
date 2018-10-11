@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import com.example.payment.KeyStoreHelper
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
 import network.celer.mobile.Client
 import network.celer.mobile.Mobile
@@ -11,7 +12,6 @@ import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
-    // TODO: Add your own keystore and its passwordStr here. Put your receiver addr
     private var keyStoreString = ""
     private var passwordStr = ""
     private var receiverAddr = ""
@@ -29,12 +29,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         generateFilePath()
 
-        // Get keyStoreString and passwordStr
+        // Get keyStroeString and passwordStr
         keyStoreString = KeyStoreHelper().getKeyStoreString(this@MainActivity)
         passwordStr = KeyStoreHelper().getPassword()
 
+        var keyStoreJson = Gson().fromJson(keyStoreString, KeyStoreData::class.java)
+        var joinAddr = "0x" + keyStoreJson.address
 
         addLog("keyStoreString: ${keyStoreString}")
+        Log.d("MainActivity", keyStoreString)
         addLog("passwordStr: ${passwordStr}")
 
         val profileStr = getString(R.string.cprofile, datadir)
@@ -42,35 +45,57 @@ class MainActivity : AppCompatActivity() {
         // Init Celer Client
         try {
             client = Mobile.newClient(keyStoreString, passwordStr, profileStr)
-        } catch (e: Exception) {
+        } catch(e: Exception) {
             addLog("Init Celer Client Error: ${e.localizedMessage}")
         }
 
-        // Join Celer Network
-        try {
-            client?.joinCeler("0x0", clientSideDepositAmount, serverSideDepositAmount)
-            addLog("Balance: ${client?.getBalance(1)?.available}")
-        } catch (e: Exception) {
-            addLog("Join Celer Network Error: ${e.localizedMessage}")
 
-        }
+        // Deposit some token from faucet
+        FaucetHelper().getTokenFromFaucet(this, walletAddress = joinAddr, faucetCallBack = object : FaucetHelper.FaucetCallBack {
+            override fun onSuccess() {
 
-        // check if an address has joined Celer Network
-        try {
-            receiverAddr = "0x2718aaa01fc6fa27dd4d6d06cc569c4a0f34d399"
-            val hasJoin = client?.hasJoinedCeler(receiverAddr)
-            addLog("hasJoin: $hasJoin")
-        } catch (e: Exception) {
-            addLog("check Error: ${e.localizedMessage}")
-        }
+                logtext.append("\n getTokenSucceed ")
 
-        // send cETH to an address
-        try {
-            client?.sendPay(receiverAddr, transferAmount)
-        } catch (e: Exception) {
-            addLog("send cETH Error: ${e.localizedMessage}")
+                // Join Celer Network
+                try {
+                    client?.joinCeler("0x0", clientSideDepositAmount, serverSideDepositAmount)
+                    addLog("Balance: ${client?.getBalance(1)?.available}")
+                } catch (e: Exception) {
+                    addLog("Join Celer Network Error: ${e.localizedMessage}")
 
-        }
+                }
+
+                // check if an address has joined Celer Network
+                try {
+                    receiverAddr = "0x2718aaa01fc6fa27dd4d6d06cc569c4a0f34d399"
+                    val hasJoin = client?.hasJoinedCeler(receiverAddr)
+                    addLog("hasJoin: $hasJoin")
+                } catch (e: Exception) {
+                    addLog("check Error: ${e.localizedMessage}")
+                }
+
+                // send cETH to an address
+                try {
+                    client?.sendPay(receiverAddr, transferAmount)
+                    addLog("sendPay: done")
+                } catch (e: Exception) {
+                    addLog("send cETH Error: ${e.localizedMessage}")
+
+                }
+
+            }
+
+            override fun onFailure() {
+
+                logtext.append("\n getToken Error ")
+
+            }
+
+        })
+
+
+
+
     }
 
     private fun generateFilePath() {
