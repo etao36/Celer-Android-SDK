@@ -1,7 +1,8 @@
-package com.example.myapplication
+package com.example.payment
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import kotlinx.android.synthetic.main.activity_main.*
 import network.celer.mobile.Client
 import network.celer.mobile.Mobile
@@ -16,8 +17,8 @@ class MainActivity : AppCompatActivity() {
 
     private var datadir = ""
 
-    private val clientSideDepositAmount = "500000000000000000" // 0.5 cETH
-    private val serverSideDepositAmount = "1500000000000000000" // 1.5 cETH
+    private val clientSideDepositAmount = "500000000000000000" // 0.5 ETH
+    private val serverSideDepositAmount = "1500000000000000000" // 1.5 ETH
     private var transferAmount: String = "30000000000000000" // 0.03 ETH
 
     private var client: Client? = null
@@ -27,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         generateFilePath()
 
-        // Get keyStroeString and passwordStr
+        // Get keyStoreString and passwordStr
         keyStoreString = KeyStoreHelper().getKeyStoreString(this@MainActivity)
         passwordStr = KeyStoreHelper().getPassword()
 
@@ -80,8 +81,9 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun addLog(txt: String?) {
-        logtext.append("\n" + txt)
+    fun addLog(text: String?) {
+        Log.d("Celer Off-chain Payment", text)
+        logtext.append("\n" + text)
     }
 
 }

@@ -1,12 +1,10 @@
-package com.example.myapplication
+package com.example.payment
 
 import android.content.Context
 import network.celer.geth.Account
 import network.celer.geth.Geth
 import network.celer.geth.KeyStore
-import network.celer.mobile.Mobile
 import java.io.File
-import java.lang.Exception
 
 class KeyStoreHelper {
     private val createPassword = "CelerNetwork"
