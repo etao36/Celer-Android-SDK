@@ -27,6 +27,12 @@ class MainActivity : AppCompatActivity(), GroupCallback {
     private lateinit var gc: GroupClient
     lateinit var joinAddr: String
 
+
+    private var opponentIndex = -1
+    private var myIndex = -1
+    private var myAddress: String? = null
+    private var opponentAddress: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -97,9 +103,61 @@ class MainActivity : AppCompatActivity(), GroupCallback {
     }
 
     override fun onRecvGroup(gresp: GroupResp?, err: String?) {
-        addLog("OnRecvGroup:")
+        addLog("OnRecvGroup--------------------:")
         addLog(gresp.toString())
         addLog(err)
+        gresp?.let {
+            if (it.g.users.split(",").size == 2) {
+
+
+                initSession(it.g)
+
+
+            }
+        }
+
+    }
+
+    private fun initSession(g: Group?) {
+
+        g?.let {
+
+            val playerAddresses = it.users.split(",")
+
+            if (playerAddresses.size == 2) {
+
+                if (playerAddresses[0].toLowerCase() == joinAddr!!.toLowerCase()) {
+                    myAddress = playerAddresses[0]
+                    opponentAddress = playerAddresses[1]
+                    myIndex = 1
+                    opponentIndex = 2
+                } else {
+                    myAddress = playerAddresses[1]
+                    opponentAddress = playerAddresses[0]
+                    opponentIndex = 1
+                    myIndex = 2
+                }
+
+
+//                Timber.d("ME myAddress: $myAddress")
+//                Timber.d("myId: ${it.myId}")
+//                Timber.d("Opponent: $opponentAddress")
+//                Timber.d("stake: ${it.stake}")
+//                Timber.d("myIndex: $myIndex")
+//                Timber.d("opponentIndex: $opponentIndex")
+
+                //TODO CREATE SESSION
+//                gomokuSessionViewModel.createNewCAppSession(playerAddresses[0], playerAddresses[1], opponentAddress!!, groupResponse.round.id)
+//                Timber.d("it.stake: %s", it.stake)
+//                Timber.d("opponentIndex: %s", opponentIndex)
+
+
+            }
+
+
+        }
+
+
     }
 
     fun onCreatePrivate(v: View) {
@@ -107,7 +165,7 @@ class MainActivity : AppCompatActivity(), GroupCallback {
         g.myId = keyStoreString
         g.code = 111111
         g.stake = "1000000000000000000"
-        addLog("Bot: " + g.toString())
+        addLog("Create: " + g.toString())
         try {
             gc.createPrivate(g)
         } catch (e: Exception) {
