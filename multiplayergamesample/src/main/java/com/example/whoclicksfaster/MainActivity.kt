@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity(), GroupCallback {
     private var client: Client? = null
     var sessionId: String? = null
 
-    private lateinit var gc: GroupClient
+
     lateinit var joinAddr: String
 
 
@@ -41,7 +41,24 @@ class MainActivity : AppCompatActivity(), GroupCallback {
     private var myAddress: String? = null
     private var opponentAddress: String? = null
 
+    var clickNum = 0
+
     var handler: Handler = Handler()
+
+    val cApp = CApp()
+    var callback = object : CAppCallback {
+        override fun onStatusChanged(status: Long) {
+            Log.e("whoclicksfaster", "createNewCAppSession onStatusChanged is: $status")
+        }
+
+        override fun onReceiveState(state: ByteArray?): Boolean {
+            Log.e("whoclicksfaster", "createNewCAppSession onReceiveState : $state")
+            state?.let {
+                //                            currentCAppStateLive.postValue(state)
+            }
+            return true
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +72,7 @@ class MainActivity : AppCompatActivity(), GroupCallback {
         var keyStoreJson = Gson().fromJson(keyStoreString, KeyStoreData::class.java)
         joinAddr = "0x" + keyStoreJson.address
 
-        addLog("keyStoreString: ${keyStoreString}")
+//        addLog("keyStoreString: ${keyStoreString}")
         Log.d("keyStoreString", keyStoreString)
         Log.d("joinAddr: ", joinAddr)
         addLog("passwordStr: ${passwordStr}")
@@ -108,21 +125,13 @@ class MainActivity : AppCompatActivity(), GroupCallback {
 
         }
 
-        onNewGroupClient()
+        GroupAPIHelper.onNewGroupClient(keyStoreString, passwordStr, this)
 
 
     }
 
 
-    fun onNewGroupClient() {
-        try {
-            gc = Mobile.newGroupClient("group-prod-ropsten.celer.app:10001", keyStoreString, passwordStr, this)
-            addLog("Connected to Group Server")
-        } catch (e: Exception) {
-            addLog("NewGroupClient failed: " + e.toString())
-            Log.e("NewGroupClient failed: ", e.toString())
-        }
-    }
+
 
     override fun onRecvGroup(gresp: GroupResp?, err: String?) {
 
@@ -139,21 +148,16 @@ class MainActivity : AppCompatActivity(), GroupCallback {
 
             if (it.g.users.split(",").size == 2) {
                 Log.e("whoclicksfaster", "matched")
-                join_code.text = "matched"
+                handler.post {
+                    join_code.text = "matched"
+                }
+
                 initSession(gresp)
             }
         }
 
     }
 
-    fun leave() {
-        gc?.let {
-            Log.e("whoclicksfaster", "leave previous group")
-            var g = Group()
-            g.myId = joinAddr
-            it.leave(g)
-        }
-    }
 
     private fun initSession(gresp: GroupResp?) {
         gresp?.let {
@@ -176,23 +180,8 @@ class MainActivity : AppCompatActivity(), GroupCallback {
                     }
 
 
-                    //TODO CREATE SESSION
 
-                    val cApp = CApp()
-
-                    cApp.callback = object : CAppCallback {
-                        override fun onStatusChanged(status: Long) {
-//                        Timber.d("createNewCAppSession onStatusChanged is: %s", status)
-                        }
-
-                        override fun onReceiveState(state: ByteArray?): Boolean {
-//                        Timber.d("createNewCAppSession onReceiveState")
-                            state?.let {
-                                //                            currentCAppStateLive.postValue(state)
-                            }
-                            return true
-                        }
-                    }
+                    cApp.callback = callback
 
                     val constructor = FunctionEncoder.encodeConstructor(Arrays.asList(
                             Address(myAddress),
@@ -204,6 +193,15 @@ class MainActivity : AppCompatActivity(), GroupCallback {
 
 
                     sessionId = client?.newCAppSession(cApp, constructor, gresp.round.id)
+                    Log.e("whoclicksfaster", "sessionId : $sessionId")
+
+//                    val delay = if (myIndex == 1) 2000L else 0L
+//                    var stake = it.stake.split(".")[0]
+//
+//                    handler.postDelayed({
+//                        sendPayWithConditions(stake, opponentIndex)
+//                    }, 0)
+
 
 
                 }
@@ -217,31 +215,12 @@ class MainActivity : AppCompatActivity(), GroupCallback {
     }
 
     fun onCreatePrivate(v: View) {
-        leave()
-        var g = Group()
-        g.myId = joinAddr
-        g.size = 2
-        g.stake = "1000000000000000000"
-        addLog("Create: " + g.toString())
-        try {
-            gc.createPrivate(g)
-        } catch (e: Exception) {
-            addLog(e.toString())
-        }
+        GroupAPIHelper.onCreatePrivate(joinAddr)
     }
 
     fun onJoinPrivate(v: View) {
-        leave()
-        var g = Group()
-        g.myId = joinAddr
-        g.code = etJoinCode.text.toString().toLong()
-        g.stake = "10"
-
-        try {
-            gc.joinPrivate(g)
-        } catch (e: Exception) {
-            addLog(e.toString())
-        }
+        var code = etJoinCode.text.toString().toLong()
+        GroupAPIHelper.onJoinPrivate(joinAddr, code)
     }
 
 
