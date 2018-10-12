@@ -130,7 +130,10 @@ class MainActivity : AppCompatActivity(), GroupCallback {
 
     fun clickMe(v: View) {
         var state = ByteArray(3)
-        state[0] = 50
+        state[0] = clickNum++.toByte()
+        handler.post {
+            Click.text = clickNum.toString()
+        }
         ClientAPIHelper.sendState(state)
     }
 

@@ -24,7 +24,7 @@ object GroupAPIHelper {
         var g = Group()
         g.myId = joinAddr
         g.size = 2
-        g.stake = "1000000000000000000"
+        g.stake = "1000000000000000"
         Log.e("whoclicksfaster ", "Create: " + g.toString())
         try {
             gc.createPrivate(g)

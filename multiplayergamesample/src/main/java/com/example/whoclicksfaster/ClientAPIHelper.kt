@@ -101,13 +101,10 @@ object ClientAPIHelper {
                     sessionId = client?.newCAppSession(cApp, constructor, gresp.round.id)
                     Log.e("whoclicksfaster", "sessionId : $sessionId")
 
-//                    val delay = if (myIndex == 1) 2000L else 0L
-//                    var stake = it.stake.split(".")[0]
-//
-//                    handler.postDelayed({
-//                        sendPayWithConditions(stake, opponentIndex)
-//                    }, 0)
+                    val delay = if (myIndex == 1) 2000L else 0L
+                    var stake = it.stake.split(".")[0]
 
+                    sendPayWithConditions(stake, opponentIndex)
 
                 }
 
@@ -119,7 +116,26 @@ object ClientAPIHelper {
 
     }
 
+    fun sendPayWithConditions(amount: String, indexOpponent: Int) {
+        val booleanCondition = BooleanCondition()
+        booleanCondition.timeout = 500
+        booleanCondition.sessionID = sessionId
+        val argsForQueryResult = byteArrayOf(1)
+        argsForQueryResult[0] = indexOpponent.toByte()
+        booleanCondition.argsForQueryResult = argsForQueryResult
 
+        Log.e("whoclicksfaster", "sendPayWithCondtions: argsForQueryResult[0]: ${argsForQueryResult[0]}")
+
+        try {
+            client?.sendPayWithConditions(opponentAddress, amount, booleanCondition)
+            Log.e("whoclicksfaster", "sendPay: sent")
+        } catch (e: Exception) {
+            Log.e("whoclicksfaster ", "sendPayWithConditions Error: ${e.localizedMessage}")
+
+        }
+
+
+    }
 
     fun sendState(state: ByteArray) {
         client?.sendCAppState(sessionId, opponentAddress, state)
