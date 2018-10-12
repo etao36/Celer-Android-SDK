@@ -1,5 +1,6 @@
 package com.example.whoclicksfaster
 
+import android.content.Context
 import android.util.Log
 import com.google.gson.Gson
 import network.celer.mobile.*
@@ -7,6 +8,7 @@ import org.web3j.abi.FunctionEncoder
 import org.web3j.abi.datatypes.Address
 import org.web3j.abi.datatypes.generated.Uint256
 import org.web3j.abi.datatypes.generated.Uint8
+import java.io.InputStream
 import java.util.*
 
 object ClientAPIHelper {
@@ -65,7 +67,7 @@ object ClientAPIHelper {
     }
 
 
-    fun initSession(gresp: GroupResp?) {
+    fun initSession(context: Context, gresp: GroupResp?) {
         gresp?.let {
             it?.g.let {
 
@@ -85,13 +87,36 @@ object ClientAPIHelper {
                         myIndex = 2
                     }
 
+                    var gomokuABI: String? = null
+                    var gomokuBIN: String? = null
 
+                    //read ABI
+                    try {
+                        val inputStream: InputStream = context.assets.open("Gomoku.abi")
+                        gomokuABI = inputStream.bufferedReader().use { it.readText() }
+//                        Log.e("whoclicksfaster", "createNewCAppSession gomokuABI is: $gomokuABI")
+                    } catch (e: Exception) {
+                        Log.e("whoclicksfaster", "createNewCAppSession gomokuABI reading exception: ${e.message}")
+                    }
+
+                    //read bin
+                    try {
+                        val inputStream: InputStream = context.assets.open("Gomoku.bin")
+                        gomokuBIN = inputStream.bufferedReader().use { it.readText() }
+//                        Log.e("whoclicksfaster", "createNewCAppSession gomokuBIN is: $gomokuBIN")
+                    } catch (e: Exception) {
+                        Log.e("whoclicksfaster", "createNewCAppSession gomokuBIN reading exception:  ${e.message}")
+                    }
+
+
+//                    cApp.contractAbi = gomokuABI
+//                    cApp.contractBin = gomokuBIN
 
                     cApp.callback = callback
 
                     val constructor = FunctionEncoder.encodeConstructor(Arrays.asList(
-                            Address(myAddress),
-                            Address(opponentAddress),
+                            Address(playerAddresses[0]),
+                            Address(playerAddresses[1]),
                             Uint256(3),
                             Uint256(3),
                             Uint8(5),
@@ -99,12 +124,16 @@ object ClientAPIHelper {
 
 
                     sessionId = client?.newCAppSession(cApp, constructor, gresp.round.id)
+                    Log.e("whoclicksfaster", "myAddress : $myAddress")
+                    Log.e("whoclicksfaster", "opponentAddress : $opponentAddress")
                     Log.e("whoclicksfaster", "sessionId : $sessionId")
+                    Log.e("whoclicksfaster", "gresp.round.id : ${gresp.round.id}")
 
-                    val delay = if (myIndex == 1) 2000L else 0L
-                    var stake = it.stake.split(".")[0]
 
-                    sendPayWithConditions(stake, opponentIndex)
+//                    val delay = if (myIndex == 1) 2000L else 0L
+//                    var stake = it.stake.split(".")[0]
+//
+//                    sendPayWithConditions(stake, opponentIndex)
 
                 }
 
@@ -138,6 +167,9 @@ object ClientAPIHelper {
     }
 
     fun sendState(state: ByteArray) {
+        Log.e("whoclicksfaster", "sessionId : $sessionId")
+        Log.e("whoclicksfaster", "myAddress : $myAddress")
+        Log.e("whoclicksfaster", "opponentAddress : $opponentAddress")
         client?.sendCAppState(sessionId, opponentAddress, state)
 
     }

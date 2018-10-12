@@ -5,6 +5,7 @@ import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import com.example.payment.KeyStoreHelper
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
@@ -110,7 +111,13 @@ class MainActivity : AppCompatActivity(), GroupCallback {
                     join_code.text = "matched"
                 }
 
-                ClientAPIHelper.initSession(gresp)
+                ClientAPIHelper.initSession(this, gresp)
+                handler.post {
+                    addLog("\n sessionId: " + ClientAPIHelper.sessionId)
+                    addLog("\n gresp.round.id: " + gresp.round.id)
+                    Toast.makeText(this, ClientAPIHelper.sessionId, Toast.LENGTH_LONG).show()
+                }
+
             }
         }
 
@@ -129,11 +136,19 @@ class MainActivity : AppCompatActivity(), GroupCallback {
     }
 
     fun clickMe(v: View) {
-        var state = ByteArray(3)
+        var state = ByteArray(4)
         state[0] = clickNum++.toByte()
         handler.post {
             Click.text = clickNum.toString()
         }
+
+//        for (i in state.indices) {
+//            state[i] = 0
+//        }
+//        state[0] = 0
+//        state[1] = 1
+
+
         ClientAPIHelper.sendState(state)
     }
 
