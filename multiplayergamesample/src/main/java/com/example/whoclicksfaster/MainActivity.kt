@@ -9,6 +9,7 @@ import android.widget.Toast
 import com.example.payment.KeyStoreHelper
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
+import network.celer.mobile.CAppCallback
 import network.celer.mobile.GroupCallback
 import network.celer.mobile.GroupResp
 import java.io.File
@@ -29,12 +30,46 @@ class MainActivity : AppCompatActivity(), GroupCallback {
 
     lateinit var joinAddr: String
 
-
+    val MAX = 20
 
 
     var clickNum = 0
 
     var handler: Handler = Handler()
+
+    var lock = false
+
+
+    var callback = object : CAppCallback {
+        override fun onStatusChanged(status: Long) {
+            Log.e("whoclicksfaster", "createNewCAppSession onStatusChanged is: $status")
+        }
+
+        override fun onReceiveState(state: ByteArray?): Boolean {
+            Log.e("whoclicksfaster", "createNewCAppSession onReceiveState : $state")
+
+
+            handler.post {
+
+                state?.let {
+                    if (!lock) {
+                        opponentBar.progress = state[0].toInt()
+                    }
+
+
+                    if (!lock && state[0].toInt() >= MAX) {
+                        logtext.text = "YOU LOSE"
+                        logtext.visibility = View.VISIBLE
+                        Click.visibility = View.INVISIBLE
+                        lock = true
+                    }
+                }
+
+
+            }
+            return true
+        }
+    }
 
 
 
@@ -107,12 +142,19 @@ class MainActivity : AppCompatActivity(), GroupCallback {
 
             if (it.g.users.split(",").size == 2) {
                 Log.e("whoclicksfaster", "matched")
-                handler.post {
-                    join_code.text = "matched"
-                }
 
-                ClientAPIHelper.initSession(this, gresp)
+                ClientAPIHelper.initSession(this, gresp, callback)
+
+
                 handler.post {
+                    opponentBar.progress = 0
+                    yourBar.progress = 0
+                    clickNum = 0
+                    lock = false
+                    join_code.text = "matched"
+                    logtext.visibility = View.INVISIBLE
+                    Click.visibility = View.VISIBLE
+                    Click.text = "Click"
                     addLog("\n sessionId: " + ClientAPIHelper.sessionId)
                     addLog("\n gresp.round.id: " + gresp.round.id)
                     Toast.makeText(this, ClientAPIHelper.sessionId, Toast.LENGTH_LONG).show()
@@ -127,7 +169,13 @@ class MainActivity : AppCompatActivity(), GroupCallback {
 
 
     fun onCreatePrivate(v: View) {
-        GroupAPIHelper.onCreatePrivate(joinAddr)
+        if (GroupAPIHelper.gc == null) {
+            Toast.makeText(applicationContext, "GroupAPIHelper.onNewGroupClient failure ,try later", Toast.LENGTH_LONG).show()
+            GroupAPIHelper.onNewGroupClient(keyStoreString, passwordStr, this)
+        } else {
+            GroupAPIHelper.onCreatePrivate(joinAddr)
+        }
+
     }
 
     fun onJoinPrivate(v: View) {
@@ -136,20 +184,23 @@ class MainActivity : AppCompatActivity(), GroupCallback {
     }
 
     fun clickMe(v: View) {
-        var state = ByteArray(4)
-        state[0] = clickNum++.toByte()
-        handler.post {
-            Click.text = clickNum.toString()
-        }
-
-//        for (i in state.indices) {
-//            state[i] = 0
-//        }
-//        state[0] = 0
-//        state[1] = 1
-
+        var state = ByteArray(1)
+        clickNum++
+        state[0] = clickNum.toByte()
 
         ClientAPIHelper.sendState(state)
+
+        handler.post {
+            Click.text = clickNum.toString()
+            yourBar.progress = clickNum
+            if (!lock && clickNum >= MAX) {
+                logtext.text = "YOU WIN!!!"
+                logtext.visibility = View.VISIBLE
+                Click.visibility = View.INVISIBLE
+                lock = true
+            }
+        }
+
     }
 
 

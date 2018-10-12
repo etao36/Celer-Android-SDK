@@ -7,7 +7,7 @@ import network.celer.mobile.GroupClient
 import network.celer.mobile.Mobile
 
 object GroupAPIHelper {
-    private lateinit var gc: GroupClient
+    var gc: GroupClient? = null
 
     fun onNewGroupClient(keyStoreString: String, passwordStr: String, callback: GroupCallback) {
         try {
@@ -27,7 +27,7 @@ object GroupAPIHelper {
         g.stake = "1000000000000000"
         Log.e("whoclicksfaster ", "Create: " + g.toString())
         try {
-            gc.createPrivate(g)
+            gc?.createPrivate(g)
         } catch (e: Exception) {
             Log.e("whoclicksfaster ", e.toString())
         }
@@ -42,7 +42,7 @@ object GroupAPIHelper {
         g.stake = "10"
 
         try {
-            gc.joinPrivate(g)
+            gc?.joinPrivate(g)
         } catch (e: Exception) {
             Log.e("whoclicksfaster ", e.toString())
         }

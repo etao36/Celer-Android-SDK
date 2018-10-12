@@ -24,20 +24,19 @@ object ClientAPIHelper {
     var sessionId: String? = null
 
     val cApp = CApp()
-    var callback = object : CAppCallback {
-        override fun onStatusChanged(status: Long) {
-            Log.e("whoclicksfaster", "createNewCAppSession onStatusChanged is: $status")
-        }
 
-        override fun onReceiveState(state: ByteArray?): Boolean {
-            Log.e("whoclicksfaster", "createNewCAppSession onReceiveState : $state")
-            state?.let {
-                //                            currentCAppStateLive.postValue(state)
-            }
-            return true
-        }
-    }
-
+//    var callback = object : CAppCallback {
+//        override fun onStatusChanged(status: Long) {
+//            Log.e("whoclicksfaster", "createNewCAppSession onStatusChanged is: $status")
+//        }
+//
+//        override fun onReceiveState(state: ByteArray?): Boolean {
+//            Log.e("whoclicksfaster", "createNewCAppSession onReceiveState : $state")
+//
+//
+//            return true
+//        }
+//    }
 
     fun initCelerClient(keyStoreString: String, passwordStr: String, profileStr: String) {
         // Init Celer Client
@@ -67,7 +66,7 @@ object ClientAPIHelper {
     }
 
 
-    fun initSession(context: Context, gresp: GroupResp?) {
+    fun initSession(context: Context, gresp: GroupResp?, callback: CAppCallback) {
         gresp?.let {
             it?.g.let {
 
@@ -122,8 +121,13 @@ object ClientAPIHelper {
                             Uint8(5),
                             Uint8(3)))
 
+                    try {
+                        sessionId = client?.newCAppSession(cApp, constructor, gresp.round.id)
+                    } catch (e: Exception) {
+                        Log.e("whoclicksfaster ", "newCAppSession Error: ${e.localizedMessage}")
 
-                    sessionId = client?.newCAppSession(cApp, constructor, gresp.round.id)
+                    }
+
                     Log.e("whoclicksfaster", "myAddress : $myAddress")
                     Log.e("whoclicksfaster", "opponentAddress : $opponentAddress")
                     Log.e("whoclicksfaster", "sessionId : $sessionId")
