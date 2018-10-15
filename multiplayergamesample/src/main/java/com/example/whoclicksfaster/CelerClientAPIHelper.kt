@@ -11,7 +11,7 @@ import org.web3j.abi.datatypes.generated.Uint8
 import java.io.InputStream
 import java.util.*
 
-object ClientAPIHelper {
+object CelerClientAPIHelper {
     private var client: Client? = null
 
     lateinit var joinAddr: String

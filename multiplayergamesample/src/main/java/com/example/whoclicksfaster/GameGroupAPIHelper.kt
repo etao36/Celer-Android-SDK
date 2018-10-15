@@ -6,7 +6,7 @@ import network.celer.mobile.GroupCallback
 import network.celer.mobile.GroupClient
 import network.celer.mobile.Mobile
 
-object GroupAPIHelper {
+object GameGroupAPIHelper {
     var gc: GroupClient? = null
 
     fun onNewGroupClient(keyStoreString: String, passwordStr: String, callback: GroupCallback) {
@@ -19,7 +19,7 @@ object GroupAPIHelper {
     }
 
 
-    fun onCreatePrivate(joinAddr: String) {
+    fun createGame(joinAddr: String) {
         leave(joinAddr)
         var g = Group()
         g.myId = joinAddr
@@ -34,7 +34,7 @@ object GroupAPIHelper {
     }
 
 
-    fun onJoinPrivate(joinAddr: String, code: Long) {
+    fun joinGame(joinAddr: String, code: Long) {
         leave(joinAddr)
         var g = Group()
         g.myId = joinAddr

@@ -1,10 +1,12 @@
 package com.example.whoclicksfaster
 
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.example.payment.KeyStoreHelper
 import com.google.gson.Gson
@@ -33,7 +35,7 @@ class MainActivity : AppCompatActivity(), GroupCallback {
     val MAX = 50
 
 
-    var clickNum = 0
+    var numberOfClicks = 0
 
     var handler: Handler = Handler()
 
@@ -89,7 +91,7 @@ class MainActivity : AppCompatActivity(), GroupCallback {
         val profileStr = getString(R.string.cprofile, datadir)
 
 
-        ClientAPIHelper.initCelerClient(keyStoreString, passwordStr, profileStr)
+        CelerClientAPIHelper.initCelerClient(keyStoreString, passwordStr, profileStr)
 
 
         // Deposit some token from faucet
@@ -98,9 +100,9 @@ class MainActivity : AppCompatActivity(), GroupCallback {
 
                 Log.d("whoclicksfaster", "\n getTokenSucceed ")
 
-//                ClientAPIHelper.joinCeler(clientSideDepositAmount, serverSideDepositAmount)
+//                CelerClientAPIHelper.joinCeler(clientSideDepositAmount, serverSideDepositAmount)
 //
-//                GroupAPIHelper.onNewGroupClient(keyStoreString, passwordStr, MainActivity.this)
+//                GameGroupAPIHelper.onNewGroupClient(keyStoreString, passwordStr, MainActivity.this)
 
 
             }
@@ -113,9 +115,9 @@ class MainActivity : AppCompatActivity(), GroupCallback {
 
         })
 
-        ClientAPIHelper.joinCeler(clientSideDepositAmount, serverSideDepositAmount)
+        CelerClientAPIHelper.joinCeler(clientSideDepositAmount, serverSideDepositAmount)
 
-        GroupAPIHelper.onNewGroupClient(keyStoreString, passwordStr, this)
+        GameGroupAPIHelper.onNewGroupClient(keyStoreString, passwordStr, this)
 
 
     }
@@ -130,20 +132,21 @@ class MainActivity : AppCompatActivity(), GroupCallback {
 
             handler.post {
                 var code = it.g.code.toString()
-                join_code.text = "join code is: " + code
+                join_code.text = "Game code is: $code"
             }
 
 
             if (it.g.users.split(",").size == 2) {
-                Log.e("whoclicksfaster", "matched")
+                Log.d("whoclicksfaster", "Matched with a player!")
 
-                ClientAPIHelper.initSession(this, gresp, callback)
+                CelerClientAPIHelper.initSession(this, gresp, callback)
 
 
                 handler.post {
+                    hideSoftKeyboard()
                     opponentScoreBar.progress = 0
                     yourScoreBar.progress = 0
-                    clickNum = 0
+                    numberOfClicks = 0
                     lock = false
                     join_code.text = "matched"
                     opponentScoreBar.max = MAX
@@ -151,9 +154,9 @@ class MainActivity : AppCompatActivity(), GroupCallback {
                     clickButton.visibility = View.VISIBLE
                     clickButton.isEnabled = true
                     clickButton.text = "Click as fast as you can"
-                    Log.d("whoclicksfaster", "session id: " + ClientAPIHelper.sessionId)
+                    Log.d("whoclicksfaster", "session id: " + CelerClientAPIHelper.sessionId)
                     Log.d("whoclicksfaster", "round id: " + gresp.round.id)
-                    Toast.makeText(this, ClientAPIHelper.sessionId, Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, CelerClientAPIHelper.sessionId, Toast.LENGTH_LONG).show()
                 }
 
             }
@@ -162,32 +165,32 @@ class MainActivity : AppCompatActivity(), GroupCallback {
     }
 
 
-    fun onCreatePrivate(v: View) {
-        if (GroupAPIHelper.gc == null) {
-            Toast.makeText(applicationContext, "GroupAPIHelper.onNewGroupClient failure. Try again later.", Toast.LENGTH_LONG).show()
-            GroupAPIHelper.onNewGroupClient(keyStoreString, passwordStr, this)
+    fun onCreateGame(v: View) {
+        if (GameGroupAPIHelper.gc == null) {
+            Toast.makeText(applicationContext, "GameGroupAPIHelper.onNewGroupClient failure. Try again later.", Toast.LENGTH_LONG).show()
+            GameGroupAPIHelper.onNewGroupClient(keyStoreString, passwordStr, this)
         } else {
-            GroupAPIHelper.onCreatePrivate(joinAddr)
+            GameGroupAPIHelper.createGame(joinAddr)
         }
 
     }
 
-    fun onJoinPrivate(v: View) {
+    fun onJoinGame(v: View) {
         var code = etJoinCode.text.toString().toLong()
-        GroupAPIHelper.onJoinPrivate(joinAddr, code)
+        GameGroupAPIHelper.joinGame(joinAddr, code)
     }
 
     fun clickMe(v: View) {
         var state = ByteArray(1)
-        clickNum++
-        state[0] = clickNum.toByte()
+        numberOfClicks++
+        state[0] = numberOfClicks.toByte()
 
-        ClientAPIHelper.sendState(state)
+        CelerClientAPIHelper.sendState(state)
 
         handler.post {
-            clickButton.text = clickNum.toString()
-            yourScoreBar.progress = clickNum
-            if (!lock && clickNum >= MAX) {
+            clickButton.text = numberOfClicks.toString()
+            yourScoreBar.progress = numberOfClicks
+            if (!lock && numberOfClicks >= MAX) {
                 clickButton.text = "You win!"
                 clickButton.isEnabled = false
                 lock = true
@@ -205,5 +208,12 @@ class MainActivity : AppCompatActivity(), GroupCallback {
         datadir = generaFile.path
     }
 
+
+    fun hideSoftKeyboard() {
+        if (currentFocus != null) {
+            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager!!.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+        }
+    }
 
 }
