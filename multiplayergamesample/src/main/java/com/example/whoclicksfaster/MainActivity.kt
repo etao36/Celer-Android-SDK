@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity(), GroupCallback {
 
     lateinit var joinAddr: String
 
-    val MAX = 20
+    val MAX = 50
 
 
     var clickNum = 0
@@ -53,14 +53,12 @@ class MainActivity : AppCompatActivity(), GroupCallback {
 
                 state?.let {
                     if (!lock) {
-                        opponentBar.progress = state[0].toInt()
+                        opponentScoreBar.progress = state[0].toInt()
                     }
 
-
                     if (!lock && state[0].toInt() >= MAX) {
-                        logtext.text = "YOU LOSE"
-                        logtext.visibility = View.VISIBLE
-                        Click.visibility = View.INVISIBLE
+                        clickButton.text = "You lost!"
+                        clickButton.isEnabled = false
                         lock = true
                     }
                 }
@@ -70,7 +68,6 @@ class MainActivity : AppCompatActivity(), GroupCallback {
             return true
         }
     }
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,7 +85,6 @@ class MainActivity : AppCompatActivity(), GroupCallback {
 //        addLog("keyStoreString: ${keyStoreString}")
         Log.d("keyStoreString", keyStoreString)
         Log.d("joinAddr: ", joinAddr)
-        addLog("passwordStr: ${passwordStr}")
 
         val profileStr = getString(R.string.cprofile, datadir)
 
@@ -100,7 +96,7 @@ class MainActivity : AppCompatActivity(), GroupCallback {
         FaucetHelper().getTokenFromFaucet(this, walletAddress = joinAddr, faucetCallBack = object : FaucetHelper.FaucetCallBack {
             override fun onSuccess() {
 
-                logtext.append("\n getTokenSucceed ")
+                Log.d("whoclicksfaster", "\n getTokenSucceed ")
 
 //                ClientAPIHelper.joinCeler(clientSideDepositAmount, serverSideDepositAmount)
 //
@@ -111,7 +107,7 @@ class MainActivity : AppCompatActivity(), GroupCallback {
 
             override fun onFailure() {
 
-                logtext.append("\n getToken Error ")
+                Log.d("whoclicksfaster", "\n getToken Error ")
 
             }
 
@@ -123,8 +119,6 @@ class MainActivity : AppCompatActivity(), GroupCallback {
 
 
     }
-
-
 
 
     override fun onRecvGroup(gresp: GroupResp?, err: String?) {
@@ -147,16 +141,18 @@ class MainActivity : AppCompatActivity(), GroupCallback {
 
 
                 handler.post {
-                    opponentBar.progress = 0
-                    yourBar.progress = 0
+                    opponentScoreBar.progress = 0
+                    yourScoreBar.progress = 0
                     clickNum = 0
                     lock = false
                     join_code.text = "matched"
-                    logtext.visibility = View.INVISIBLE
-                    Click.visibility = View.VISIBLE
-                    Click.text = "Click"
-                    addLog("\n sessionId: " + ClientAPIHelper.sessionId)
-                    addLog("\n gresp.round.id: " + gresp.round.id)
+                    opponentScoreBar.max = MAX
+                    yourScoreBar.max = MAX
+                    clickButton.visibility = View.VISIBLE
+                    clickButton.isEnabled = true
+                    clickButton.text = "Click as fast as you can"
+                    Log.d("whoclicksfaster", "session id: " + ClientAPIHelper.sessionId)
+                    Log.d("whoclicksfaster", "round id: " + gresp.round.id)
                     Toast.makeText(this, ClientAPIHelper.sessionId, Toast.LENGTH_LONG).show()
                 }
 
@@ -166,11 +162,9 @@ class MainActivity : AppCompatActivity(), GroupCallback {
     }
 
 
-
-
     fun onCreatePrivate(v: View) {
         if (GroupAPIHelper.gc == null) {
-            Toast.makeText(applicationContext, "GroupAPIHelper.onNewGroupClient failure ,try later", Toast.LENGTH_LONG).show()
+            Toast.makeText(applicationContext, "GroupAPIHelper.onNewGroupClient failure. Try again later.", Toast.LENGTH_LONG).show()
             GroupAPIHelper.onNewGroupClient(keyStoreString, passwordStr, this)
         } else {
             GroupAPIHelper.onCreatePrivate(joinAddr)
@@ -191,12 +185,11 @@ class MainActivity : AppCompatActivity(), GroupCallback {
         ClientAPIHelper.sendState(state)
 
         handler.post {
-            Click.text = clickNum.toString()
-            yourBar.progress = clickNum
+            clickButton.text = clickNum.toString()
+            yourScoreBar.progress = clickNum
             if (!lock && clickNum >= MAX) {
-                logtext.text = "YOU WIN!!!"
-                logtext.visibility = View.VISIBLE
-                Click.visibility = View.INVISIBLE
+                clickButton.text = "You win!"
+                clickButton.isEnabled = false
                 lock = true
             }
         }
@@ -212,10 +205,5 @@ class MainActivity : AppCompatActivity(), GroupCallback {
         datadir = generaFile.path
     }
 
-
-    fun addLog(text: String?) {
-        Log.d("Celer Off-chain Payment", text)
-        logtext.append("\n" + text)
-    }
 
 }

@@ -2,8 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
     <Button
         android:id="@+id/button"
@@ -14,8 +13,7 @@
         android:onClick="onCreatePrivate"
         android:text="create Game"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/button1"
@@ -25,30 +23,8 @@
         android:onClick="onJoinPrivate"
         android:text="Join Private"
         app:layout_constraintStart_toEndOf="@+id/etJoinCode"
-        app:layout_constraintTop_toTopOf="@+id/etJoinCode"
-        />
+        app:layout_constraintTop_toTopOf="@+id/etJoinCode" />
 
-
-    <android.support.v4.widget.NestedScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.484"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etJoinCode"
-        app:layout_constraintVertical_bias="0.0"
-        >
-
-        <TextView
-            android:id="@+id/logtext"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hello Celer Network!"
-            android:visibility="invisible"
-            />
-    </android.support.v4.widget.NestedScrollView>
 
     <EditText
         android:id="@+id/etJoinCode"
@@ -59,8 +35,7 @@
         android:hint="enter join code"
         android:inputType="number"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/join_code"
@@ -72,67 +47,63 @@
         android:hint="join code"
         app:layout_constraintBottom_toBottomOf="@+id/button"
         app:layout_constraintStart_toEndOf="@+id/button"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/Click"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:onClick="clickMe"
-        android:text="Click"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
 
     <ProgressBar
-        android:id="@+id/opponentBar"
+        android:id="@+id/opponentScoreBar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:max="20"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/opponentScore" />
 
     <ProgressBar
-        android:id="@+id/yourBar"
+        android:id="@+id/yourScoreBar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:max="20"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/yourScore" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/yourScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:text="Your Click:"
+        android:text="Your score:"
+        app:layout_constraintBottom_toTopOf="@+id/yourScoreBar"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/opponentBar"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/opponentScoreBar" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/opponentScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="80dp"
-        android:text="Opponent Click:"
+        android:text="Opponent score:"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etJoinCode"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/etJoinCode" />
 
+    <Button
+        android:id="@+id/clickButton"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:onClick="clickMe"
+        android:text="Click me as fast as you can"
+        android:textColor="@android:color/white"
+        android:textSize="25sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/yourScoreBar" />
 
 </android.support.constraint.ConstraintLayout>
