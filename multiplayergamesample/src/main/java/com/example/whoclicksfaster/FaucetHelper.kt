@@ -18,14 +18,51 @@ class FaucetHelper {
 
     }
 
-    fun getTokenFromFaucet(context: Context, walletAddress: String, faucetCallBack: FaucetCallBack) {
+    fun getTokenFromPrivateNetFaucet(context: Context, faucetURL: String, walletAddress: String, faucetCallBack: FaucetCallBack) {
 
         val requestQueue = Volley.newRequestQueue(context)
-//        val URL = "https://faucet.metamask.io"
-        val URL = "http://52.33.3.31:9000/"
-        val requestBody = walletAddress
 
-        val stringRequest = object : StringRequest(Request.Method.POST, URL,
+        val stringRequest = object : StringRequest(Request.Method.GET, "$faucetURL$walletAddress",
+                Response.Listener {
+
+                    response ->
+                    Log.i("VOLLEY", response)
+
+                    if (response == "200") {
+                        faucetCallBack.onSuccess()
+                    } else {
+                        faucetCallBack.onFailure()
+                    }
+                },
+                Response.ErrorListener {
+
+                    error ->
+                    Log.e("VOLLEY", error.toString())
+
+                    faucetCallBack.onFailure()
+                }) {
+            override fun getBodyContentType(): String {
+                return "application/json; charset=utf-8"
+            }
+
+            override fun parseNetworkResponse(response: NetworkResponse): Response<String> {
+                var responseString = ""
+                if (response != null) {
+                    responseString = response.statusCode.toString()
+                    // can get more details such as response.headers
+                }
+                return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response))
+            }
+        }
+
+        requestQueue.add(stringRequest)
+    }
+
+    fun getTokenFromFaucet(context: Context, faucetURL: String, walletAddress: String, faucetCallBack: FaucetCallBack) {
+
+        val requestQueue = Volley.newRequestQueue(context)
+
+        val stringRequest = object : StringRequest(Request.Method.POST, faucetURL,
                 Response.Listener {
 
                     response ->
@@ -52,9 +89,9 @@ class FaucetHelper {
             @Throws(AuthFailureError::class)
             override fun getBody(): ByteArray? {
                 try {
-                    return requestBody?.toByteArray(charset("utf-8"))
+                    return walletAddress?.toByteArray(charset("utf-8"))
                 } catch (uee: UnsupportedEncodingException) {
-                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8")
+                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", walletAddress, "utf-8")
                     return null
                 }
 

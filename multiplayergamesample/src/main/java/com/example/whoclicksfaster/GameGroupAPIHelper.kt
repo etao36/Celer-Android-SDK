@@ -9,9 +9,9 @@ import network.celer.mobile.Mobile
 object GameGroupAPIHelper {
     var gc: GroupClient? = null
 
-    fun onNewGroupClient(keyStoreString: String, passwordStr: String, callback: GroupCallback) {
+    fun createNewGroupClient(keyStoreString: String, passwordStr: String, callback: GroupCallback) {
         try {
-            gc = Mobile.newGroupClient("group-prod-ropsten.celer.app:10001", keyStoreString, passwordStr, callback)
+            gc = Mobile.newGroupClient("group-test-priv.celer.app:10001", keyStoreString, passwordStr, callback)
             Log.e("whoclicksfaster ", "Connected to Group Server")
         } catch (e: Exception) {
             Log.e("whoclicksfaster ", e.toString())

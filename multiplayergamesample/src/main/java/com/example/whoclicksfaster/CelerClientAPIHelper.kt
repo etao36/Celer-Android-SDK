@@ -2,6 +2,7 @@ package com.example.whoclicksfaster
 
 import android.content.Context
 import android.util.Log
+import com.example.whoclicksfaster.KeyStoreData
 import com.google.gson.Gson
 import network.celer.mobile.*
 import org.web3j.abi.FunctionEncoder
@@ -12,6 +13,8 @@ import java.io.InputStream
 import java.util.*
 
 object CelerClientAPIHelper {
+
+    private val TAG = "who clicks faster"
     private var client: Client? = null
 
     lateinit var joinAddr: String
@@ -27,11 +30,11 @@ object CelerClientAPIHelper {
 
 //    var callback = object : CAppCallback {
 //        override fun onStatusChanged(status: Long) {
-//            Log.e("whoclicksfaster", "createNewCAppSession onStatusChanged is: $status")
+//            Log.e(TAG, "createNewCAppSession onStatusChanged is: $status")
 //        }
 //
 //        override fun onReceiveState(state: ByteArray?): Boolean {
-//            Log.e("whoclicksfaster", "createNewCAppSession onReceiveState : $state")
+//            Log.e(TAG, "createNewCAppSession onReceiveState : $state")
 //
 //
 //            return true
@@ -42,14 +45,18 @@ object CelerClientAPIHelper {
         // Init Celer Client
 
         var keyStoreJson = Gson().fromJson(keyStoreString, KeyStoreData::class.java)
+
+        Log.d(TAG, "address in keyStoreJson: ${keyStoreJson.address}")
+
         joinAddr = "0x" + keyStoreJson.address
 
 
 
         try {
             client = Mobile.newClient(keyStoreString, passwordStr, profileStr)
+            Log.d(TAG, "Celer client created")
         } catch (e: Exception) {
-            Log.d("whoclicksfaster ", e.localizedMessage)
+            Log.d(TAG, e.localizedMessage)
         }
     }
 
@@ -57,9 +64,9 @@ object CelerClientAPIHelper {
         // Join Celer Network
         try {
             client?.joinCeler("0x0", clientSideDepositAmount, serverSideDepositAmount)
-            Log.d("whoclicksfaster ", "Balance: ${client?.getBalance(1)?.available}")
+            Log.d(TAG, "Balance: ${client?.getBalance(1L)?.available}")
         } catch (e: Exception) {
-            Log.d("whoclicksfaster ", "Join Celer Network Error: ${e.localizedMessage}")
+            Log.d(TAG, "Join Celer Network Error: ${e.localizedMessage}")
 
         }
 
@@ -93,18 +100,18 @@ object CelerClientAPIHelper {
                     try {
                         val inputStream: InputStream = context.assets.open("Gomoku.abi")
                         gomokuABI = inputStream.bufferedReader().use { it.readText() }
-//                        Log.e("whoclicksfaster", "createNewCAppSession gomokuABI is: $gomokuABI")
+//                        Log.e(TAG, "createNewCAppSession gomokuABI is: $gomokuABI")
                     } catch (e: Exception) {
-                        Log.e("whoclicksfaster", "createNewCAppSession gomokuABI reading exception: ${e.message}")
+                        Log.d(TAG, "createNewCAppSession gomokuABI reading exception: ${e.message}")
                     }
 
                     //read bin
                     try {
                         val inputStream: InputStream = context.assets.open("Gomoku.bin")
                         gomokuBIN = inputStream.bufferedReader().use { it.readText() }
-//                        Log.e("whoclicksfaster", "createNewCAppSession gomokuBIN is: $gomokuBIN")
+//                        Log.e(TAG, "createNewCAppSession gomokuBIN is: $gomokuBIN")
                     } catch (e: Exception) {
-                        Log.e("whoclicksfaster", "createNewCAppSession gomokuBIN reading exception:  ${e.message}")
+                        Log.d(TAG, "createNewCAppSession gomokuBIN reading exception:  ${e.message}")
                     }
 
 
@@ -124,14 +131,14 @@ object CelerClientAPIHelper {
                     try {
                         sessionId = client?.newCAppSession(cApp, constructor, gresp.round.id)
                     } catch (e: Exception) {
-                        Log.e("whoclicksfaster ", "newCAppSession Error: ${e.localizedMessage}")
+                        Log.e(TAG, "newCAppSession Error: ${e.localizedMessage}")
 
                     }
 
-                    Log.e("whoclicksfaster", "myAddress : $myAddress")
-                    Log.e("whoclicksfaster", "opponentAddress : $opponentAddress")
-                    Log.e("whoclicksfaster", "sessionId : $sessionId")
-                    Log.e("whoclicksfaster", "gresp.round.id : ${gresp.round.id}")
+                    Log.e(TAG, "myAddress : $myAddress")
+                    Log.e(TAG, "opponentAddress : $opponentAddress")
+                    Log.e(TAG, "sessionId : $sessionId")
+                    Log.e(TAG, "gresp.round.id : ${gresp.round.id}")
 
 
 //                    val delay = if (myIndex == 1) 2000L else 0L
@@ -157,13 +164,13 @@ object CelerClientAPIHelper {
         argsForQueryResult[0] = indexOpponent.toByte()
         booleanCondition.argsForQueryResult = argsForQueryResult
 
-        Log.e("whoclicksfaster", "sendPayWithCondtions: argsForQueryResult[0]: ${argsForQueryResult[0]}")
+        Log.e(TAG, "sendPayWithCondtions: argsForQueryResult[0]: ${argsForQueryResult[0]}")
 
         try {
             client?.sendPayWithConditions(opponentAddress, amount, booleanCondition)
-            Log.e("whoclicksfaster", "sendPay: sent")
+            Log.e(TAG, "sendPay: sent")
         } catch (e: Exception) {
-            Log.e("whoclicksfaster ", "sendPayWithConditions Error: ${e.localizedMessage}")
+            Log.e(TAG, "sendPayWithConditions Error: ${e.localizedMessage}")
 
         }
 
@@ -171,9 +178,9 @@ object CelerClientAPIHelper {
     }
 
     fun sendState(state: ByteArray) {
-        Log.e("whoclicksfaster", "sessionId : $sessionId")
-        Log.e("whoclicksfaster", "myAddress : $myAddress")
-        Log.e("whoclicksfaster", "opponentAddress : $opponentAddress")
+        Log.e(TAG, "sessionId : $sessionId")
+        Log.e(TAG, "myAddress : $myAddress")
+        Log.e(TAG, "opponentAddress : $opponentAddress")
         client?.sendCAppState(sessionId, opponentAddress, state)
 
     }

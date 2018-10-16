@@ -19,6 +19,7 @@ import java.io.File
 class MainActivity : AppCompatActivity(), GroupCallback {
 
 
+    private val TAG = "who clicks faster"
     private var keyStoreString = ""
     private var passwordStr = ""
     private var receiverAddr = ""
@@ -44,11 +45,11 @@ class MainActivity : AppCompatActivity(), GroupCallback {
 
     var callback = object : CAppCallback {
         override fun onStatusChanged(status: Long) {
-            Log.e("whoclicksfaster", "createNewCAppSession onStatusChanged is: $status")
+            Log.e(TAG, "createNewCAppSession onStatusChanged is: $status")
         }
 
         override fun onReceiveState(state: ByteArray?): Boolean {
-            Log.e("whoclicksfaster", "createNewCAppSession onReceiveState : $state")
+            Log.e(TAG, "createNewCAppSession onReceiveState : $state")
 
 
             handler.post {
@@ -84,7 +85,6 @@ class MainActivity : AppCompatActivity(), GroupCallback {
         var keyStoreJson = Gson().fromJson(keyStoreString, KeyStoreData::class.java)
         joinAddr = "0x" + keyStoreJson.address
 
-//        addLog("keyStoreString: ${keyStoreString}")
         Log.d("keyStoreString", keyStoreString)
         Log.d("joinAddr: ", joinAddr)
 
@@ -94,30 +94,27 @@ class MainActivity : AppCompatActivity(), GroupCallback {
         CelerClientAPIHelper.initCelerClient(keyStoreString, passwordStr, profileStr)
 
 
-        // Deposit some token from faucet
-        FaucetHelper().getTokenFromFaucet(this, walletAddress = joinAddr, faucetCallBack = object : FaucetHelper.FaucetCallBack {
+        // Get some token from faucet
+        FaucetHelper().getTokenFromPrivateNetFaucet(context = this, faucetURL = "http://54.188.217.246:3008/donate/", walletAddress = joinAddr, faucetCallBack = object : FaucetHelper.FaucetCallBack {
             override fun onSuccess() {
-
-                Log.d("whoclicksfaster", "\n getTokenSucceed ")
-
-//                CelerClientAPIHelper.joinCeler(clientSideDepositAmount, serverSideDepositAmount)
-//
-//                GameGroupAPIHelper.onNewGroupClient(keyStoreString, passwordStr, MainActivity.this)
-
-
+                Log.d(TAG, "\n faucet success")
             }
 
             override fun onFailure() {
 
-                Log.d("whoclicksfaster", "\n getToken Error ")
+                Log.d(TAG, "\n faucet error ")
 
             }
 
         })
 
-        CelerClientAPIHelper.joinCeler(clientSideDepositAmount, serverSideDepositAmount)
+        try {
+            CelerClientAPIHelper.joinCeler(clientSideDepositAmount, serverSideDepositAmount)
+        } catch (e: Exception) {
+            Log.e(TAG, "\n joinCeler error: " + e.message)
+        }
 
-        GameGroupAPIHelper.onNewGroupClient(keyStoreString, passwordStr, this)
+        GameGroupAPIHelper.createNewGroupClient(keyStoreString, passwordStr, this)
 
 
     }
@@ -125,9 +122,9 @@ class MainActivity : AppCompatActivity(), GroupCallback {
 
     override fun onRecvGroup(gresp: GroupResp?, err: String?) {
 
-        Log.e("whoclicksfaster", "OnRecvGroup--------------------:")
-        Log.e("whoclicksfaster", gresp?.toString())
-        Log.e("whoclicksfaster", err)
+        Log.e(TAG, "OnRecvGroup--------------------:")
+        Log.e(TAG, gresp?.toString())
+        Log.e(TAG, err)
         gresp?.let {
 
             handler.post {
@@ -137,7 +134,7 @@ class MainActivity : AppCompatActivity(), GroupCallback {
 
 
             if (it.g.users.split(",").size == 2) {
-                Log.d("whoclicksfaster", "Matched with a player!")
+                Log.d(TAG, "Matched with a player!")
 
                 CelerClientAPIHelper.initSession(this, gresp, callback)
 
@@ -148,14 +145,14 @@ class MainActivity : AppCompatActivity(), GroupCallback {
                     yourScoreBar.progress = 0
                     numberOfClicks = 0
                     lock = false
-                    join_code.text = "matched"
+                    join_code.text = "Matched with a player"
                     opponentScoreBar.max = MAX
                     yourScoreBar.max = MAX
                     clickButton.visibility = View.VISIBLE
                     clickButton.isEnabled = true
                     clickButton.text = "Click as fast as you can"
-                    Log.d("whoclicksfaster", "session id: " + CelerClientAPIHelper.sessionId)
-                    Log.d("whoclicksfaster", "round id: " + gresp.round.id)
+                    Log.d(TAG, "Session id: " + CelerClientAPIHelper.sessionId)
+                    Log.d(TAG, "Round id: " + gresp.round.id)
                     Toast.makeText(this, CelerClientAPIHelper.sessionId, Toast.LENGTH_LONG).show()
                 }
 
@@ -167,8 +164,8 @@ class MainActivity : AppCompatActivity(), GroupCallback {
 
     fun onCreateGame(v: View) {
         if (GameGroupAPIHelper.gc == null) {
-            Toast.makeText(applicationContext, "GameGroupAPIHelper.onNewGroupClient failure. Try again later.", Toast.LENGTH_LONG).show()
-            GameGroupAPIHelper.onNewGroupClient(keyStoreString, passwordStr, this)
+            Toast.makeText(applicationContext, "GameGroupAPIHelper.createNewGroupClient failure. Try again later.", Toast.LENGTH_LONG).show()
+            GameGroupAPIHelper.createNewGroupClient(keyStoreString, passwordStr, this)
         } else {
             GameGroupAPIHelper.createGame(joinAddr)
         }
@@ -201,11 +198,11 @@ class MainActivity : AppCompatActivity(), GroupCallback {
 
 
     private fun generateFilePath() {
-        val generaFile = File(this.filesDir.path, "celer")
-        if (!generaFile.exists()) {
-            generaFile.mkdir()
+        val file = File(this.filesDir.path, "celer")
+        if (!file.exists()) {
+            file.mkdir()
         }
-        datadir = generaFile.path
+        datadir = file.path
     }
 
 
