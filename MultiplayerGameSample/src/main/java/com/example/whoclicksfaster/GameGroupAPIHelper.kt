@@ -39,19 +39,17 @@ object GameGroupAPIHelper {
     }
 
 
-    fun joinGame(joinAddr: String, code: Long): String {
+    fun joinGame(joinAddr: String, code: Long, stake:String) {
         leave(joinAddr)
         var g = Group()
         g.myId = joinAddr
         g.code = code
-        g.stake = "10"
+        g.stake = stake
 
         try {
             gc?.joinPrivate(g)
-            return "Success"
         } catch (e: Exception) {
             Log.e("whoclicksfaster ", e.toString())
-            return e.toString()
         }
     }
 

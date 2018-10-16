@@ -43,10 +43,10 @@ class JoinCelerActivity : AppCompatActivity() {
         var keyStoreJson = Gson().fromJson(keyStoreString, KeyStoreData::class.java)
         joinAddr = "0x" + keyStoreJson.address
 
-        Log.d(TAG, "keyStoreString" + keyStoreString)
-        Log.d(TAG, "joinAddr: " + joinAddr)
+        Log.d(TAG, "keyStoreString$keyStoreString")
+        Log.d(TAG, "joinAddr: $joinAddr")
 
-        showTips("createWallet Success : " + joinAddr)
+        showTips("createWallet Success : $joinAddr")
 
     }
 
@@ -65,7 +65,7 @@ class JoinCelerActivity : AppCompatActivity() {
         FaucetHelper().getTokenFromPrivateNetFaucet(context = this, faucetURL = "http://54.188.217.246:3008/donate/", walletAddress = joinAddr, faucetCallBack = object : FaucetHelper.FaucetCallBack {
             override fun onSuccess() {
                 Log.d(TAG, "\n faucet success")
-                showTips("getTokenFromFaucet success,wait transcation complete")
+                showTips("getTokenFromFaucet success,wait for transaction to complete")
             }
 
             override fun onFailure() {

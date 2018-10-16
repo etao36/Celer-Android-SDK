@@ -174,7 +174,7 @@ class MainActivity : AppCompatActivity(), GroupCallback {
 
     fun onJoinGame(v: View) {
         var code = etJoinCode.text.toString().toLong()
-        GameGroupAPIHelper.joinGame(joinAddr, code)
+        GameGroupAPIHelper.joinGame(joinAddr, code, "10")
     }
 
     fun clickMe(v: View) {

@@ -67,7 +67,6 @@ class CreateOrJoinGroupActivity : AppCompatActivity(), GroupCallback {
 
                 GameGroupAPIHelper.gresp = gresp
 
-
                 var intent = Intent(this, FastClickGameActivity::class.java)
                 startActivity(intent)
             }
@@ -79,10 +78,9 @@ class CreateOrJoinGroupActivity : AppCompatActivity(), GroupCallback {
 
     fun joinGame(v: View) {
         var code = etJoinCode.text.toString().toLong()
-        var result = GameGroupAPIHelper.joinGame(joinAddr, code)
-
-        showTips("joinGame : $result")
-
+        var stake = "10"
+        var result = GameGroupAPIHelper.joinGame(joinAddr, code, stake)
+        showTips("joining game")
     }
 
 
