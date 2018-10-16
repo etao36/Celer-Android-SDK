@@ -4,25 +4,11 @@ import android.util.Log
 import network.celer.mobile.*
 
 object GameGroupAPIHelper {
+
+
+    private val TAG = "who click fast"
     var gc: GroupClient? = null
-
-    var callBack: GroupCallback = object : GroupCallback {
-        override fun onRecvGroup(p0: GroupResp?, p1: String?) {
-
-
-        }
-    }
-
-    fun createNewGroupClient(keyStoreString: String, passwordStr: String): String {
-        try {
-            gc = Mobile.newGroupClient("group-test-priv.celer.app:10001", keyStoreString, passwordStr, callBack)
-            Log.e("whoclicksfaster ", "Connected to Group Server")
-            return "Connected to Group Server Success"
-        } catch (e: Exception) {
-            Log.e("whoclicksfaster ", e.toString())
-            return e.toString()
-        }
-    }
+    var gresp: GroupResp? = null
 
     fun createNewGroupClient(keyStoreString: String, passwordStr: String, callback: GroupCallback): String {
         try {

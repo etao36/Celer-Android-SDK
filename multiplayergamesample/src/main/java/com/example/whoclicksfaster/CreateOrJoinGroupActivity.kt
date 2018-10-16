@@ -1,14 +1,17 @@
 package com.example.whoclicksfaster
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.View
 import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_join_celer.*
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_create_or_join_group.*
+import network.celer.mobile.GroupCallback
+import network.celer.mobile.GroupResp
 
-class CreateOrJoinGroupActivity : AppCompatActivity() {
+class CreateOrJoinGroupActivity : AppCompatActivity(), GroupCallback {
 
     private val TAG = "CreateOrJoinGroup"
 
@@ -31,7 +34,7 @@ class CreateOrJoinGroupActivity : AppCompatActivity() {
 
     fun createGame(v: View) {
 
-        var result = GameGroupAPIHelper.createNewGroupClient(keyStoreString, passwordStr)
+        var result = GameGroupAPIHelper.createNewGroupClient(keyStoreString, passwordStr, this)
 
         showTips("createNewGroupClient : $result")
 
@@ -45,6 +48,33 @@ class CreateOrJoinGroupActivity : AppCompatActivity() {
 
 
     }
+
+    override fun onRecvGroup(gresp: GroupResp?, err: String?) {
+        Log.e(TAG, "OnRecvGroup--------------------:")
+        Log.e(TAG, gresp?.toString())
+        Log.e(TAG, err)
+        gresp?.let {
+
+            handler.post {
+                var code = it.g.code.toString()
+                tvCode.text = "JoinCode: $code"
+            }
+
+
+            if (it.g.users.split(",").size == 2) {
+                Log.d(TAG, "Matched with a player!")
+                showTips("Matched with a player!")
+
+                GameGroupAPIHelper.gresp = gresp
+
+
+                var intent = Intent(this, FastClickGameActivity::class.java)
+                startActivity(intent)
+            }
+        }
+
+    }
+
 
 
     fun joinGame(v: View) {

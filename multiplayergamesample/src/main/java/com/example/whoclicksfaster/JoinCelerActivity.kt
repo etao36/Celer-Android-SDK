@@ -1,5 +1,6 @@
 package com.example.whoclicksfaster
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.support.v7.app.AppCompatActivity
@@ -95,6 +96,12 @@ class JoinCelerActivity : AppCompatActivity() {
     }
 
     fun play(v: View) {
+
+        var intent = Intent(this, CreateOrJoinGroupActivity::class.java)
+        intent.putExtra("keyStoreString", keyStoreString)
+        intent.putExtra("passwordStr", passwordStr)
+        intent.putExtra("joinAddr", joinAddr)
+        startActivity(intent)
 
     }
 
