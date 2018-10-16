@@ -31,13 +31,12 @@ class CreateOrJoinGroupActivity : AppCompatActivity() {
 
     fun createGame(v: View) {
 
-        var result = GameGroupAPIHelper.createNewGroupClient(keyStoreString, passwordStr, this)
+        var result = GameGroupAPIHelper.createNewGroupClient(keyStoreString, passwordStr)
 
         showTips("createNewGroupClient : $result")
 
         if (GameGroupAPIHelper.gc == null || !result.contains("Success")) {
             Toast.makeText(applicationContext, "GameGroupAPIHelper.createNewGroupClient failure. Try again later.", Toast.LENGTH_LONG).show()
-            GameGroupAPIHelper.createNewGroupClient(keyStoreString, passwordStr)
         } else {
             var result = GameGroupAPIHelper.createGame(joinAddr)
 
