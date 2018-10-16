@@ -45,7 +45,7 @@ class JoinCelerActivity : AppCompatActivity() {
         Log.d(TAG, "keyStoreString" + keyStoreString)
         Log.d(TAG, "joinAddr: " + joinAddr)
 
-        showTips(keyStoreString)
+        showTips("createWallet Success : " + joinAddr)
 
     }
 

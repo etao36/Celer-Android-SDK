@@ -9,6 +9,7 @@
         \"ResolverAddr\": \"1e92cd8c8af5ab6cf5a93824e7f24532fccab5d8\",
         \"DepositPoolAddr\": \"b9353a8413189e3c6c4fce8c48c9b4bd6e5be814\",
         \"HTLRegistryAddr\": \"869ef00c827f91ca115bfe25427b75d970b8d95d\"}</string>
+    <string name="title_activity_create_or_join_group">CreateOrJoinGroupActivity</string>
 
     <!--<string name="cprofile"> {-->
     <!--"ETHInstance": "ws://34.219.139.189:8546",-->

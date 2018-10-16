@@ -1,25 +1,42 @@
 package com.example.whoclicksfaster
 
 import android.util.Log
-import network.celer.mobile.Group
-import network.celer.mobile.GroupCallback
-import network.celer.mobile.GroupClient
-import network.celer.mobile.Mobile
+import network.celer.mobile.*
 
 object GameGroupAPIHelper {
     var gc: GroupClient? = null
 
-    fun createNewGroupClient(keyStoreString: String, passwordStr: String, callback: GroupCallback) {
+    var callBack: GroupCallback = object : GroupCallback {
+        override fun onRecvGroup(p0: GroupResp?, p1: String?) {
+
+
+        }
+    }
+
+    fun createNewGroupClient(keyStoreString: String, passwordStr: String): String {
+        try {
+            gc = Mobile.newGroupClient("group-test-priv.celer.app:10001", keyStoreString, passwordStr, callBack)
+            Log.e("whoclicksfaster ", "Connected to Group Server")
+            return "Connected to Group Server Success"
+        } catch (e: Exception) {
+            Log.e("whoclicksfaster ", e.toString())
+            return e.toString()
+        }
+    }
+
+    fun createNewGroupClient(keyStoreString: String, passwordStr: String, callback: GroupCallback): String {
         try {
             gc = Mobile.newGroupClient("group-test-priv.celer.app:10001", keyStoreString, passwordStr, callback)
             Log.e("whoclicksfaster ", "Connected to Group Server")
+            return "Connected to Group Server Success"
         } catch (e: Exception) {
             Log.e("whoclicksfaster ", e.toString())
+            return e.toString()
         }
     }
 
 
-    fun createGame(joinAddr: String) {
+    fun createGame(joinAddr: String): String {
         leave(joinAddr)
         var g = Group()
         g.myId = joinAddr
@@ -28,13 +45,15 @@ object GameGroupAPIHelper {
         Log.e("whoclicksfaster ", "Create: " + g.toString())
         try {
             gc?.createPrivate(g)
+            return "Success"
         } catch (e: Exception) {
             Log.e("whoclicksfaster ", e.toString())
+            return e.toString()
         }
     }
 
 
-    fun joinGame(joinAddr: String, code: Long) {
+    fun joinGame(joinAddr: String, code: Long): String {
         leave(joinAddr)
         var g = Group()
         g.myId = joinAddr
@@ -43,8 +62,10 @@ object GameGroupAPIHelper {
 
         try {
             gc?.joinPrivate(g)
+            return "Success"
         } catch (e: Exception) {
             Log.e("whoclicksfaster ", e.toString())
+            return e.toString()
         }
     }
 
