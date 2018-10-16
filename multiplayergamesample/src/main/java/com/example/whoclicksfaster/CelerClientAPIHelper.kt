@@ -2,7 +2,6 @@ package com.example.whoclicksfaster
 
 import android.content.Context
 import android.util.Log
-import com.example.whoclicksfaster.KeyStoreData
 import com.google.gson.Gson
 import network.celer.mobile.*
 import org.web3j.abi.FunctionEncoder
@@ -41,7 +40,7 @@ object CelerClientAPIHelper {
 //        }
 //    }
 
-    fun initCelerClient(keyStoreString: String, passwordStr: String, profileStr: String) {
+    fun initCelerClient(keyStoreString: String, passwordStr: String, profileStr: String): String {
         // Init Celer Client
 
         var keyStoreJson = Gson().fromJson(keyStoreString, KeyStoreData::class.java)
@@ -55,18 +54,22 @@ object CelerClientAPIHelper {
         try {
             client = Mobile.newClient(keyStoreString, passwordStr, profileStr)
             Log.d(TAG, "Celer client created")
+            return "Celer client created"
         } catch (e: Exception) {
             Log.d(TAG, e.localizedMessage)
+            return e.localizedMessage
         }
     }
 
-    fun joinCeler(clientSideDepositAmount: String, serverSideDepositAmount: String) {
+    fun joinCeler(clientSideDepositAmount: String, serverSideDepositAmount: String): String {
         // Join Celer Network
         try {
             client?.joinCeler("0x0", clientSideDepositAmount, serverSideDepositAmount)
             Log.d(TAG, "Balance: ${client?.getBalance(1L)?.available}")
+            return "joinCeler Success ,Balance:${client?.getBalance(1L)?.available}"
         } catch (e: Exception) {
             Log.d(TAG, "Join Celer Network Error: ${e.localizedMessage}")
+            return "Join Celer Network Error: ${e.localizedMessage}"
 
         }
 
