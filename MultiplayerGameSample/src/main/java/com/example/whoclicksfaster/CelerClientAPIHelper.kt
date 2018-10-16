@@ -18,8 +18,8 @@ object CelerClientAPIHelper {
 
     lateinit var joinAddr: String
 
-    private var opponentIndex = -1
-    private var myIndex = -1
+    var opponentIndex = -1
+    var myIndex = -1
     private var myAddress: String? = null
     private var opponentAddress: String? = null
 
@@ -27,18 +27,6 @@ object CelerClientAPIHelper {
 
     val cApp = CApp()
 
-//    var callback = object : CAppCallback {
-//        override fun onStatusChanged(status: Long) {
-//            Log.e(TAG, "createNewCAppSession onStatusChanged is: $status")
-//        }
-//
-//        override fun onReceiveState(state: ByteArray?): Boolean {
-//            Log.e(TAG, "createNewCAppSession onReceiveState : $state")
-//
-//
-//            return true
-//        }
-//    }
 
     fun initCelerClient(keyStoreString: String, passwordStr: String, profileStr: String): String {
         // Init Celer Client

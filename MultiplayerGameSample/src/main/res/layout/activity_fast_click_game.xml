@@ -20,24 +20,24 @@
         />
 
     <ProgressBar
-        android:id="@+id/yourScoreBar"
+        android:id="@+id/myScoreBar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/yourScore"
+        app:layout_constraintTop_toBottomOf="@+id/myScore"
         />
 
     <TextView
-        android:id="@+id/yourScore"
+        android:id="@+id/myScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:text="Your score:"
-        app:layout_constraintBottom_toTopOf="@+id/yourScoreBar"
+        android:text="My score:"
+        app:layout_constraintBottom_toTopOf="@+id/myScoreBar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/opponentScoreBar"
         />
