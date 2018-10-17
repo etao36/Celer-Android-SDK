@@ -7,12 +7,12 @@ object GameGroupAPIHelper {
 
 
     private val TAG = "who clicks fast"
-    var gc: GroupClient? = null
+    var groupClient: GroupClient? = null
     var gresp: GroupResp? = null
 
     fun createNewGroupClient(keyStoreString: String, passwordStr: String, callback: GroupCallback): String {
         try {
-            gc = Mobile.newGroupClient("group-test-priv.celer.app:10001", keyStoreString, passwordStr, callback)
+            groupClient = Mobile.newGroupClient("group-test-priv.celer.app:10001", keyStoreString, passwordStr, callback)
             Log.e("whoclicksfaster ", "Connected to Group Server")
             return "Connected to Group Server Success"
         } catch (e: Exception) {
@@ -30,7 +30,7 @@ object GameGroupAPIHelper {
         g.stake = "1000000000000000"
         Log.e("whoclicksfaster ", "Create: " + g.toString())
         try {
-            gc?.createPrivate(g)
+            groupClient?.createPrivate(g)
             return "Success"
         } catch (e: Exception) {
             Log.e("whoclicksfaster ", e.toString())
@@ -47,7 +47,7 @@ object GameGroupAPIHelper {
         g.stake = stake
 
         try {
-            gc?.joinPrivate(g)
+            groupClient?.joinPrivate(g)
         } catch (e: Exception) {
             Log.e("whoclicksfaster ", e.toString())
         }
@@ -55,7 +55,7 @@ object GameGroupAPIHelper {
 
 
     fun leave(joinAddr: String) {
-        gc?.let {
+        groupClient?.let {
             Log.e("whoclicksfaster", "leave previous group")
             var g = Group()
             g.myId = joinAddr

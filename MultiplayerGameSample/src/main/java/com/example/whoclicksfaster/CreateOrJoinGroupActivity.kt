@@ -38,7 +38,7 @@ class CreateOrJoinGroupActivity : AppCompatActivity(), GroupCallback {
 
         showTips("createNewGroupClient : $result")
 
-        if (GameGroupAPIHelper.gc == null || !result.contains("Success")) {
+        if (GameGroupAPIHelper.groupClient == null || !result.contains("Success")) {
             Toast.makeText(applicationContext, "GameGroupAPIHelper.createNewGroupClient failure. Try again later.", Toast.LENGTH_LONG).show()
         } else {
             var result = GameGroupAPIHelper.createGame(joinAddr)
