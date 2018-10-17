@@ -129,7 +129,7 @@ object CelerClientAPIHelper {
                     Log.e(TAG, "myAddress : $myAddress")
                     Log.e(TAG, "opponentAddress : $opponentAddress")
                     Log.e(TAG, "sessionId : $sessionId")
-                    Log.e(TAG, "gresp.round.id : ${gresp.round.id}")
+                    Log.e(TAG, "groupResponse.round.id : ${gresp.round.id}")
 
 
 //                    val delay = if (myIndex == 1) 2000L else 0L

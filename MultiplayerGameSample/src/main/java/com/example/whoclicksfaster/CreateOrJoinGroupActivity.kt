@@ -65,7 +65,7 @@ class CreateOrJoinGroupActivity : AppCompatActivity(), GroupCallback {
                 Log.d(TAG, "Matched with a player!")
                 showTips("Matched with a player!")
 
-                GameGroupAPIHelper.gresp = gresp
+                GameGroupAPIHelper.groupResponse = gresp
 
                 var intent = Intent(this, FastClickGameActivity::class.java)
                 startActivity(intent)

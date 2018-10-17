@@ -6,34 +6,34 @@ import network.celer.mobile.*
 object GameGroupAPIHelper {
 
 
-    private val TAG = "who clicks fast"
+    private const val TAG = "who clicks faster"
     var groupClient: GroupClient? = null
-    var gresp: GroupResp? = null
+    var groupResponse: GroupResp? = null
 
     fun createNewGroupClient(keyStoreString: String, passwordStr: String, callback: GroupCallback): String {
-        try {
+        return try {
             groupClient = Mobile.newGroupClient("group-test-priv.celer.app:10001", keyStoreString, passwordStr, callback)
-            Log.e("whoclicksfaster ", "Connected to Group Server")
-            return "Connected to Group Server Success"
+            Log.d(TAG, "Connected to Group Server")
+            "Connected to Group Server Success"
         } catch (e: Exception) {
-            Log.e("whoclicksfaster ", e.toString())
-            return e.toString()
+            Log.d(TAG, e.toString())
+            e.toString()
         }
     }
 
 
     fun createGame(joinAddr: String): String {
         leave(joinAddr)
-        var g = Group()
-        g.myId = joinAddr
-        g.size = 2
-        g.stake = "1000000000000000"
-        Log.e("whoclicksfaster ", "Create: " + g.toString())
+        var group = Group()
+        group.myId = joinAddr
+        group.size = 2
+        group.stake = "1000000000000000"
+        Log.d(TAG, "Create: " + group.toString())
         try {
-            groupClient?.createPrivate(g)
+            groupClient?.createPrivate(group)
             return "Success"
         } catch (e: Exception) {
-            Log.e("whoclicksfaster ", e.toString())
+            Log.d(TAG, e.toString())
             return e.toString()
         }
     }
@@ -41,25 +41,25 @@ object GameGroupAPIHelper {
 
     fun joinGame(joinAddr: String, code: Long, stake:String) {
         leave(joinAddr)
-        var g = Group()
-        g.myId = joinAddr
-        g.code = code
-        g.stake = stake
+        var group = Group()
+        group.myId = joinAddr
+        group.code = code
+        group.stake = stake
 
         try {
-            groupClient?.joinPrivate(g)
+            groupClient?.joinPrivate(group)
         } catch (e: Exception) {
-            Log.e("whoclicksfaster ", e.toString())
+            Log.d(TAG, e.toString())
         }
     }
 
 
     fun leave(joinAddr: String) {
         groupClient?.let {
-            Log.e("whoclicksfaster", "leave previous group")
-            var g = Group()
-            g.myId = joinAddr
-            it.leave(g)
+            Log.d(TAG, "leave previous group")
+            var group = Group()
+            group.myId = joinAddr
+            it.leave(group)
         }
     }
 

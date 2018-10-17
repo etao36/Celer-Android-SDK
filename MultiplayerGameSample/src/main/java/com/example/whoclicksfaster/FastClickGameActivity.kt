@@ -30,7 +30,7 @@ class FastClickGameActivity : AppCompatActivity() {
         myScoreBar?.max = MAX
         opponentScoreBar?.max = MAX
 
-        CelerClientAPIHelper.initSession(this, GameGroupAPIHelper.gresp, callback)
+        CelerClientAPIHelper.initSession(this, GameGroupAPIHelper.groupResponse, callback)
     }
 
 
