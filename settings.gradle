@@ -1,1 +1,1 @@
-include ':OffchainPaymentSample', ':goceler'
+include ':OffchainPaymentSample', ':goceler', ':MultiplayerGameSample'
