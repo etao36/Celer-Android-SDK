@@ -6,6 +6,8 @@ https://docs.google.com/document/d/17xTCVwyPqIiSNYr5dR7n3k9wNzGhXzvzwmdSDpUVbtk/
 
 # Add Payment funtionality to your app 
 
+![](https://j.gifs.com/N9M3JL.gif)
+
 ## API Overview
 
 ### Start the app and connect to Celer
@@ -23,9 +25,9 @@ Implement the following code when want to display users current balance in UI:
 * client.getAvailableBalance()
 
 ### Send Payment
+
 Implement the following code on your "send" button click event or UI swipe event.
 * client.sendPay(destinationAddress)
-
 
 ## Get started
 
