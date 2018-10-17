@@ -6,7 +6,7 @@ https://docs.google.com/document/d/17xTCVwyPqIiSNYr5dR7n3k9wNzGhXzvzwmdSDpUVbtk/
 
 # Add Payment funtionality to your app 
 
-<img src="https://j.gifs.com/N9M3JL.gif" width="400" />
+<img src="https://j.gifs.com/N9M3JL.gif" width="300" />
 
 ## API Overview
 
