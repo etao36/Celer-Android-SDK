@@ -6,7 +6,7 @@ import network.celer.mobile.*
 object GameGroupAPIHelper {
 
 
-    private val TAG = "who click fast"
+    private val TAG = "who clicks fast"
     var gc: GroupClient? = null
     var gresp: GroupResp? = null
 

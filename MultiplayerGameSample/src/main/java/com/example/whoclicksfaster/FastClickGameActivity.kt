@@ -27,7 +27,8 @@ class FastClickGameActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fast_click_game)
 
-
+        myScoreBar?.max = MAX
+        opponentScoreBar?.max = MAX
 
         CelerClientAPIHelper.initSession(this, GameGroupAPIHelper.gresp, callback)
     }
@@ -62,16 +63,16 @@ class FastClickGameActivity : AppCompatActivity() {
 
     private var callback = object : CAppCallback {
         override fun onStatusChanged(status: Long) {
-            Log.e(TAG, "createNewCAppSession onStatusChanged : $status")
+            Log.d(TAG, "createNewCAppSession onStatusChanged : $status")
         }
 
         override fun onReceiveState(state: ByteArray?): Boolean {
-            Log.e(TAG, "createNewCAppSession onReceiveState : ${Hex.toHexString(state)}")
+            Log.d(TAG, "createNewCAppSession onReceiveState : ${Hex.toHexString(state)}")
 
-            Log.e(TAG, "CelerClientAPIHelper.myIndex : ${CelerClientAPIHelper.myIndex}")
-            Log.e(TAG, "CelerClientAPIHelper.opponentIndex : ${CelerClientAPIHelper.opponentIndex}")
-            Log.e(TAG, "Player 1 score: ${state!![1].toInt()}")
-            Log.e(TAG, "Player 2 score : ${state!![2].toInt()}")
+            Log.d(TAG, "CelerClientAPIHelper.myIndex : ${CelerClientAPIHelper.myIndex}")
+            Log.d(TAG, "CelerClientAPIHelper.opponentIndex : ${CelerClientAPIHelper.opponentIndex}")
+            Log.d(TAG, "Player 1 score: ${state!![1].toInt()}")
+            Log.d(TAG, "Player 2 score : ${state!![2].toInt()}")
 
             if (CelerClientAPIHelper.myIndex == 1) {
                 opponentScore = state!![2].toInt()
@@ -79,7 +80,7 @@ class FastClickGameActivity : AppCompatActivity() {
                 opponentScore = state!![1].toInt()
             }
 
-            Log.e(TAG, "opponent score : $opponentScore")
+            Log.d(TAG, "opponent score : $opponentScore")
 
 
             handler.post {
