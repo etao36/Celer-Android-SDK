@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import kotlinx.android.synthetic.main.activity_fast_click_game.*
-import network.celer.mobile.CAppCallback
+import network.celer.celersdk.CAppCallback
 import org.spongycastle.util.encoders.Hex
 
 class FastClickGameActivity : AppCompatActivity() {
