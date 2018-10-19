@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         // Init Celer Client
         try {
             client = Celersdk.newClient(keyStoreString, passwordStr, profileStr)
-        } catch(e: Exception) {
+        } catch (e: Exception) {
             addLog("Init Celer Client Error: ${e.localizedMessage}")
         }
 
@@ -57,8 +57,8 @@ class MainActivity : AppCompatActivity() {
         // check if an address has joined Celer Network
         try {
             receiverAddr = "0x2718aaa01fc6fa27dd4d6d06cc569c4a0f34d399"
-            val hasJoin = client?.hasJoinedCeler(receiverAddr)
-            addLog("hasJoin: $hasJoin")
+            val hasJoined = client?.hasJoinedCeler(receiverAddr)
+            addLog("hasJoined$hasJoined")
         } catch (e: Exception) {
             addLog("check Error: ${e.localizedMessage}")
         }

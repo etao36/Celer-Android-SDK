@@ -16,7 +16,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/opponentScore"
+        app:layout_constraintTop_toBottomOf="@+id/opponentScoreText"
         />
 
     <ProgressBar
@@ -27,15 +27,16 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/myScore"
+        app:layout_constraintTop_toBottomOf="@+id/myScoreText"
         />
 
     <TextView
-        android:id="@+id/myScore"
+        android:id="@+id/myScoreText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
+        android:textSize="20sp"
         android:text="My score:"
         app:layout_constraintBottom_toTopOf="@+id/myScoreBar"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,16 +44,29 @@
         />
 
     <TextView
-        android:id="@+id/opponentScore"
+        android:id="@+id/opponentScoreText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
+        android:textSize="20sp"
         android:text="Opponent score:"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         />
 
+    <TextView
+        android:id="@+id/countdownTimer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="8dp"
+        android:text="5"
+        android:gravity="center"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/myScoreText"
+        app:layout_constraintBottom_toTopOf="@+id/clickButton"
+        />
 
     <Button
         android:id="@+id/clickButton"
