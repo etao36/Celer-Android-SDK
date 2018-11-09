@@ -148,7 +148,7 @@ object CelerClientAPIHelper {
 
     }
 
-    fun sendPayWithConditions(amount: String, indexOpponent: Int) {
+    fun sendPaymentWithConditions(amount: String, indexOpponent: Int) {
         val booleanCondition = BooleanCondition()
         booleanCondition.timeout = 500
         booleanCondition.sessionID = sessionId

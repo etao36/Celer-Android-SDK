@@ -24,12 +24,12 @@ class KeyStoreHelper {
         return exportPassword
     }
 
-    private fun generateFilePath(context: Context): String {
-        val generaFile = File(context.filesDir.path, "celer")
-        if (!generaFile.exists()) {
-            generaFile.mkdir()
+    fun generateFilePath(context: Context): String {
+        val file = File(context.filesDir.path, "celer")
+        if (!file.exists()) {
+            file.mkdir()
         }
-        return generaFile.path
+        return file.path
     }
 
     private fun generateKeyStore(context: Context) {
@@ -44,11 +44,8 @@ class KeyStoreHelper {
 
         gethKeyStore?.let { gethKeyStore ->
             gethKeyStore.accounts?.let { accounts ->
-                account = if (accounts.size() == 0L) {
-                    gethKeyStore.newAccount(createPassword)
-                } else {
-                    accounts.get(0)
-                }
+                account = gethKeyStore.newAccount(createPassword)
+
             }
         }
     }
@@ -60,8 +57,7 @@ class KeyStoreHelper {
 
         gethKeyStore?.let { gethKeyStore ->
             account?.let { account ->
-                keyStoreString = String(gethKeyStore.
-                        exportKey(account, createPassword, exportPassword), Charsets.UTF_8)
+                keyStoreString = String(gethKeyStore.exportKey(account, createPassword, exportPassword), Charsets.UTF_8)
             }
         }
     }
