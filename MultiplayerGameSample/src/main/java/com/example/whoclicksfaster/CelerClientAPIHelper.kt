@@ -31,15 +31,6 @@ object CelerClientAPIHelper {
 
     fun initCelerClient(keyStoreString: String, passwordStr: String, profileStr: String): String {
         // Init Celer Client
-
-        var keyStoreJson = Gson().fromJson(keyStoreString, KeyStoreData::class.java)
-
-        Log.d(TAG, "address in keyStoreJson: ${keyStoreJson.address}")
-
-        joinAddr = "0x" + keyStoreJson.address
-
-
-
         try {
             client = Celersdk.newClient(keyStoreString, passwordStr, profileStr)
             Log.d(TAG, "Celer client created")

@@ -8,7 +8,6 @@ import android.view.View
 import com.example.whoclicksfaster.KeyStoreData
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
-import java.math.BigInteger
 
 class OffChainPaymentActivity : AppCompatActivity() {
 
@@ -16,20 +15,16 @@ class OffChainPaymentActivity : AppCompatActivity() {
     private var keyStoreString = ""
     private var passwordStr = ""
     private var senderAddress = ""
-    private var receiverAddress = ""
-
 
     private val clientSideDepositAmount = "5" // 5 WEI
     private val serverSideDepositAmount = "15" // 15 WEI
 
     var handler: Handler = Handler()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
     }
-
 
     fun createWallet(v: View) {
 

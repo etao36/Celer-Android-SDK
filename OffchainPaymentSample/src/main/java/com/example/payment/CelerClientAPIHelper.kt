@@ -1,8 +1,6 @@
 package com.example.payment
 
 import android.util.Log
-import com.example.whoclicksfaster.KeyStoreData
-import com.google.gson.Gson
 import network.celer.celersdk.*
 
 object CelerClientAPIHelper {
@@ -10,17 +8,8 @@ object CelerClientAPIHelper {
     private val TAG = "who clicks faster"
     private var client: Client? = null
 
-    lateinit var joinAddr: String
-
     fun initCelerClient(keyStoreString: String, passwordStr: String, profileStr: String): String {
         // Init Celer Client
-
-        var keyStoreJson = Gson().fromJson(keyStoreString, KeyStoreData::class.java)
-
-        Log.d(TAG, "address in keyStoreJson: ${keyStoreJson.address}")
-
-        joinAddr = "0x" + keyStoreJson.address
-
         try {
             client = Celersdk.newClient(keyStoreString, passwordStr, profileStr)
             Log.d(TAG, "Celer client created")
@@ -46,8 +35,9 @@ object CelerClientAPIHelper {
     fun checkBalance(): String {
         // check has joined Celer
         try {
-            Log.d(TAG, "current Balance: ${client?.getBalance(1L)}")
-            return "${client?.getBalance(1L)?.available} wei"
+            val balance = client?.getBalance(1L)?.available
+            Log.d(TAG, "current Balance: $balance")
+            return "$balance wei"
         } catch (e: Exception) {
             Log.d(TAG, "Check Balance Error: ${e.localizedMessage}")
             return "Check Balance Error: ${e.localizedMessage}"
