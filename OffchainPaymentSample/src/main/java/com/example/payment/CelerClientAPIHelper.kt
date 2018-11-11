@@ -1,12 +1,17 @@
 package com.example.payment
 
+import android.content.Context
 import android.util.Log
 import network.celer.celersdk.*
 
 object CelerClientAPIHelper {
 
-    private val TAG = "who clicks faster"
+    private val TAG = "CelerClientAPIHelper"
     private var client: Client? = null
+
+    fun getProfile(context:Context):String{
+        return context.getString(R.string.cprofile, KeyStoreHelper.generateFilePath(context))
+    }
 
     fun initCelerClient(keyStoreString: String, passwordStr: String, profileStr: String): String {
         // Init Celer Client

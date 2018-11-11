@@ -55,10 +55,10 @@ class OffChainPaymentActivity : AppCompatActivity() {
 
         //step 3: create Celer Client
         createCelerClientButton?.setOnClickListener {
-            val profile = getString(R.string.cprofile, KeyStoreHelper.generateFilePath(this))
             val result = CelerClientAPIHelper.initCelerClient(
-                    KeyStoreHelper.getKeyStoreString(),
-                    KeyStoreHelper.getPassword(), profile)
+                    keyStoreString = KeyStoreHelper.getKeyStoreString(),
+                    passwordStr = KeyStoreHelper.getPassword(),
+                    profileStr = CelerClientAPIHelper.getProfile(this))
             showLog("Step 3: $result")
         }
 
