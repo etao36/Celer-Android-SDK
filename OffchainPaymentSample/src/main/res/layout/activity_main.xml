@@ -5,21 +5,20 @@
     android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/createWalletButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:onClick="createWallet"
         android:text="Step 1: Create Wallet"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
+        app:layout_constraintBottom_toTopOf="@+id/getTokenFromFaucetButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/getTokenFromFaucetButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -27,13 +26,13 @@
         android:layout_marginEnd="8dp"
         android:onClick="getTokenFromFaucet"
         android:text="Step 2: Get token from faucet"
-        app:layout_constraintBottom_toTopOf="@+id/button3"
+        app:layout_constraintBottom_toTopOf="@+id/createCelerClientButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button1" />
+        app:layout_constraintTop_toBottomOf="@+id/createWalletButton" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/createCelerClientButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -41,14 +40,14 @@
         android:layout_marginEnd="8dp"
         android:onClick="createCelerClient"
         android:text="Step 3: Create Celer Client"
-        app:layout_constraintBottom_toTopOf="@+id/button4"
+        app:layout_constraintBottom_toTopOf="@+id/joinCelerButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2" />
+        app:layout_constraintTop_toBottomOf="@+id/getTokenFromFaucetButton" />
 
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/joinCelerButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -56,13 +55,13 @@
         android:layout_marginEnd="8dp"
         android:onClick="joinCeler"
         android:text="Step 4: Join Celer"
-        app:layout_constraintBottom_toTopOf="@+id/button5"
+        app:layout_constraintBottom_toTopOf="@+id/checkBalanceButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button3" />
+        app:layout_constraintTop_toBottomOf="@+id/createCelerClientButton" />
 
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/checkBalanceButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -70,32 +69,30 @@
         android:layout_marginEnd="8dp"
         android:onClick="checkBalance"
         android:text="Step 5: Check Off-chain balance"
-        app:layout_constraintBottom_toTopOf="@+id/logView"
+        app:layout_constraintBottom_toTopOf="@+id/logTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button4" />
+        app:layout_constraintTop_toBottomOf="@+id/joinCelerButton" />
 
-    <android.support.v4.widget.NestedScrollView
-        android:id="@+id/logView"
-        android:layout_width="0dp"
+
+    <TextView
+        android:id="@+id/logTextView"
+        android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/sendPayment"
+        android:maxLines="10"
+        android:scrollbars="vertical"
+        android:gravity="bottom"
+        app:layout_constraintBottom_toTopOf="@+id/sendPaymentButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button5">
-
-        <TextView
-            android:id="@+id/tips"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </android.support.v4.widget.NestedScrollView>
+        app:layout_constraintTop_toBottomOf="@+id/checkBalanceButton" />
 
 
     <Button
-        android:id="@+id/sendPayment"
+        android:id="@+id/sendPaymentButton"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_marginTop="20dp"
@@ -107,7 +104,7 @@
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logView" />
+        app:layout_constraintTop_toBottomOf="@+id/logTextView" />
 
 
 </android.support.constraint.ConstraintLayout>
