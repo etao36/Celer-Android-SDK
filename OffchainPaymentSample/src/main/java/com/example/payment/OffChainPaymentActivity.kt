@@ -26,7 +26,7 @@ class OffChainPaymentActivity : AppCompatActivity() {
         Log.d(TAG, str)
         handler.post {
             logTextView?.movementMethod = ScrollingMovementMethod()
-            logTextView?.append("\n" + str)
+            logTextView?.append("\n\n" + str)
         }
     }
 
@@ -69,7 +69,7 @@ class OffChainPaymentActivity : AppCompatActivity() {
             if (result.contains("successful")) {
                 sendPaymentButton?.visibility = View.VISIBLE
             } else {
-                sendPaymentButton?.visibility = View.GONE
+                sendPaymentButton?.visibility = View.INVISIBLE
             }
         }
 
