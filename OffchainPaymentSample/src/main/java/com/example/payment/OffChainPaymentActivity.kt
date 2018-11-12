@@ -31,13 +31,13 @@ class OffChainPaymentActivity : AppCompatActivity() {
     }
 
     private fun initActions() {
-        //step 1: create wallet
+        //step 1: Create new wallet
         createWalletButton?.setOnClickListener {
             KeyStoreHelper.generateAccount(this)
             showLog("Step 1: createWallet success : ${KeyStoreHelper.getAddress()}")
         }
 
-        //step 2: get token from faucet
+        //step 2: Get token from faucet
         getTokenFromFaucetButton?.setOnClickListener {
             FaucetHelper().getTokenFromPrivateNetFaucet(context = this,
                     faucetURL = "http://54.188.217.246:3008/donate/",
@@ -53,12 +53,12 @@ class OffChainPaymentActivity : AppCompatActivity() {
                     })
         }
 
-        //step 3: create Celer Client
+        //step 3: Create Celer Client
         createCelerClientButton?.setOnClickListener {
             val result = CelerClientAPIHelper.initCelerClient(
                     keyStoreString = KeyStoreHelper.getKeyStoreString(),
                     passwordStr = KeyStoreHelper.getPassword(),
-                    profileStr = CelerClientAPIHelper.getProfile(this))
+                    profile = CelerClientAPIHelper.getProfile(this))
             showLog("Step 3: $result")
         }
 
@@ -73,13 +73,13 @@ class OffChainPaymentActivity : AppCompatActivity() {
             }
         }
 
-        //step 5: check balance
+        //step 5: Check balance
         checkBalanceButton?.setOnClickListener {
             val result = CelerClientAPIHelper.checkBalance()
             showLog("Current balance: $result")
         }
 
-        //step 6: send payment
+        //step 6: Send payment
         sendPaymentButton?.setOnClickListener {
             val result = CelerClientAPIHelper.sendPayment(
                     "0x200082086aa9f3341678927e7fc441196a222ac1",

@@ -13,10 +13,10 @@ object CelerClientAPIHelper {
         return context.getString(R.string.cprofile, KeyStoreHelper.generateFilePath(context))
     }
 
-    fun initCelerClient(keyStoreString: String, passwordStr: String, profileStr: String): String {
+    fun initCelerClient(keyStoreString: String, passwordStr: String, profile: String): String {
         // Init Celer Client
         try {
-            client = Celersdk.newClient(keyStoreString, passwordStr, profileStr)
+            client = Celersdk.newClient(keyStoreString, passwordStr, profile)
             Log.d(TAG, "Celer client created")
             return "Celer client created"
         } catch (e: Exception) {
