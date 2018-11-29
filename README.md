@@ -17,7 +17,7 @@ In this step, Celer does the following things for you:
 * Join Celer with deposit
 
 Implement the following code when you start your app.
-* client = Mobile.createNewCelerClient()
+* client = Celersdk.createNewCelerClient()
 * client.joinCeler()
 
 ### Display off-chain balance
@@ -27,62 +27,45 @@ Implement the following code when want to display users current balance in UI:
 ### Send Payment
 
 Implement the following code on your "send" button click event or UI swipe event.
-* client.sendPay(destinationAddress)
+* client.sendPay(amount, destinationAddress)
 
 ## Get started
 
-### Step 1. Prepare an Ethereum account (wallet)
+### Step 1. Create a wallet
 
 We have a helper to quickly generate wallets for you. If you already have an account or a wallet, you don't need to use our helper. Alternatively, you can use whatever wallet generation tools you like. 
 
 KeyStoreHelper will create a new ethereum account (wallet).
 
 ```kotlin
+KeyStoreHelper.generateAccount(this)
 val keyStoreString = KeyStoreHelper().getKeyStoreString(this)
-password = KeyStoreHelper().getPassword()
+val password = KeyStoreHelper().getPassword()
 ```
 Both the keyStoreString and the password will be used to create Celer client in step 3.
 
-### Step 2. Get Celer profile
-
-To connect to an off-chain service provider, you need a server profile which is provided by this off-chain service provider. 
-For your quick-test convenience, we have prepared everything you need. You can simply use the hard-coded profile in the sample project. “StoreDir” tells the SDK where to cache the data locally on your device. 
-
-```kotlin
-val profile = getString(R.string.cprofile, datadir)
-```
-
-From the code ,you can see that the profile is a json String for creating Celer client.
-
-```json
-{"ETHInstance": "wss://ropsten.infura.io/ws",
- "SvrRPC": "osp1-hack-ropsten.celer.app:10000",
- "StoreDir": "%1$s",
- "SvrETHAddr":  "f805979adde8d63d08490c7c965ee5c1df0aaae2", 
- "ChanAddr": "011b1fa33797be5fcf7f7e6bf436cf99683c186d", 
-"ResolverAddr": "cf8938ae21a21a7ffb2d47a69742ef5ce7a669cc",
- "DepositPoolAddr": "658333a4ea7dd461b56592ed62839afc18d54a42",
- "HTLRegistryAddr": "a41bf533110e0b778f6757e04cf7c6d2a8e294b1"}
-```
-
-### Step 3. Create a Celer client
-
-From Step 1 and step 2, we got 3 parameters: keyStoreString, password, profile String.
-
-Then we can create a Celer mobile client like this:
-
-```kotlin
-val client = Mobile.newClient(keyStoreString, passwordString, profileString)
-```
-
-Celer mobile client is your starting point to call almost all the methods you need in Celer SDK. 
-
-### Step 4. Join Celer Network
-
-Joining Celer means entering the off-chain world. To join celer, you need to deposit a certain amount of tokens from your on-chain wallet to Celer's state channel, to make sure that you have some off-chain balance to send to others. Meanwhile, server should also deposit certain amount of tokens to the same channel.  
+### Step 2. Prepare the wallet with some money
 
 Remember that we have already generated new account in the first step, this account does not have any on-chain balance yet.
-You can transfer some balance from your existing account if you already have some tokens. If you want to get some free testnet tokens, here is a quick tutorial to get free ethers on Ropsten:
+You can transfer some balance from your existing account if you already have some tokens. 
+
+If you want to have a quick test using Celer's private testnet, you can use Celer's helper class in the OffChainPaymentSample.
+```kotlin  
+            FaucetHelper().getTokenFromPrivateNetFaucet(context = this,
+                    faucetURL = "http://54.188.217.246:3008/donate/",
+                    walletAddress = KeyStoreHelper.getAddress(),
+                    faucetCallBack = object : FaucetHelper.FaucetCallBack {
+                        override fun onSuccess() {
+                            showLog("Step 2: getTokenFromFaucet success, wait for transaction to complete")
+                        }
+
+                        override fun onFailure() {
+                            showLog("getTokenFromFaucet error")
+                        }
+                    })
+```
+
+If you are using Ropsten testnet and want to get some free testnet tokens on Ropsten, here is a quick tutorial to get free ethers on Ropsten:
 
 * Get some free ETH:
 Open this link in your browser https://apitester.com/
@@ -101,6 +84,60 @@ For example:
 https://ropsten.etherscan.io/address/0x9f6b03cb6d8ab8239cf1045ab28b9df43dfcc823
 
 It may take a while. Please refresh the above link till you see that the balance is no longer in "pending" status.
+
+
+### Step 3. Create a Celer client
+
+To connect to an off-chain service provider, you need a server profile which is provided by this off-chain service provider. 
+For your quick-test convenience, we have prepared everything you need. You can simply use the hard-coded profile in the sample project. “StoreDir” tells the SDK where to cache the data locally on your device. 
+
+```kotlin
+val profile = getString(R.string.cprofile, datadir)
+```
+
+From the code ,you can see that the profile is a json String for creating Celer client.
+
+Json for private testnet:
+
+```json
+    <string name="cprofile">{\"ETHInstance\": \"ws://osp1-test-priv.celer.app:8546\",
+        \"SvrRPC\": \"osp1-test-priv.celer.app:10000\",
+        \"StoreDir\": \"%1$s\",
+        \"SvrETHAddr\": \"5963e46cf9f9700e70d4d1bc09210711ab4a20b4\",
+        \"ChanAddr\": \"189908e83d9245d89f0859e8361342b634785956\",
+        \"ResolverAddr\": \"1e92cd8c8af5ab6cf5a93824e7f24532fccab5d8\",
+        \"DepositPoolAddr\": \"b9353a8413189e3c6c4fce8c48c9b4bd6e5be814\",
+        \"HTLRegistryAddr\": \"869ef00c827f91ca115bfe25427b75d970b8d95d\"}</string>
+```
+
+Json for Ropsten testnet
+
+```json
+{"ETHInstance": "wss://ropsten.infura.io/ws",
+ "SvrRPC": "osp1-hack-ropsten.celer.app:10000",
+ "StoreDir": "%1$s",
+ "SvrETHAddr":  "f805979adde8d63d08490c7c965ee5c1df0aaae2", 
+ "ChanAddr": "011b1fa33797be5fcf7f7e6bf436cf99683c186d", 
+"ResolverAddr": "cf8938ae21a21a7ffb2d47a69742ef5ce7a669cc",
+ "DepositPoolAddr": "658333a4ea7dd461b56592ed62839afc18d54a42",
+ "HTLRegistryAddr": "a41bf533110e0b778f6757e04cf7c6d2a8e294b1"}
+```
+
+Then we can create a Celer mobile client like this:
+
+```kotlin
+CelerClientAPIHelper.initCelerClient(
+                    keyStoreString = KeyStoreHelper.getKeyStoreString(),
+                    passwordStr = KeyStoreHelper.getPassword(),
+                    profile = CelerClientAPIHelper.getProfile(this))
+                    
+```
+
+Celer client is your starting point to call almost all the methods you need in Celer SDK. 
+
+### Step 4. Join Celer Network
+
+Joining Celer means entering the off-chain world. To join celer, you need to deposit a certain amount of tokens from your on-chain wallet to Celer's state channel, to make sure that you have some off-chain balance to send to others. Meanwhile, server should also deposit certain amount of tokens to the same channel.  
 
 Once you have enough balance, you are good to go with this API call:
 
@@ -122,7 +159,14 @@ Joining Celer takes some time because it involves some on-chain transactions. Th
 
 Congratulations, you are in the off-chain world.
 
-### Step 5. Send off-chain payment
+
+### Step 5. Check balance
+
+```kotlin
+val balance = CelerClientAPIHelper.checkBalance()
+```
+
+### Step 6. Send off-chain payment
 
 Now that you have opened the channel, you are able to send some off-chain Ether to someone who has also joined Celer.
 
