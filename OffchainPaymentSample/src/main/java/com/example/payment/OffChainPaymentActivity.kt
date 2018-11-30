@@ -3,10 +3,10 @@ package com.example.payment
 import android.os.Bundle
 import android.os.Handler
 import android.support.v7.app.AppCompatActivity
+import android.text.method.ScrollingMovementMethod
 import android.util.Log
 import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
-import android.text.method.ScrollingMovementMethod
 
 
 class OffChainPaymentActivity : AppCompatActivity() {
