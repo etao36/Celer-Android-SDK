@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.text.method.ScrollingMovementMethod
 import android.util.Log
 import android.view.View
+import com.celer.joincelersample.FaucetHelper
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -43,13 +44,14 @@ class OffChainPaymentActivity : AppCompatActivity() {
                     faucetURL = "http://54.188.217.246:3008/donate/",
                     walletAddress = KeyStoreHelper.getAddress(),
                     faucetCallBack = object : FaucetHelper.FaucetCallBack {
+                        override fun onFailure(error: String) {
+                            showLog("getTokenFromFaucet error $error")
+                        }
+
                         override fun onSuccess() {
                             showLog("Step 2: getTokenFromFaucet success, wait for transaction to complete")
                         }
 
-                        override fun onFailure() {
-                            showLog("getTokenFromFaucet error")
-                        }
                     })
         }
 

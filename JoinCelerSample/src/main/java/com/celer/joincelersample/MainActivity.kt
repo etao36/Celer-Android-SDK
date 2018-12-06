@@ -65,8 +65,8 @@ class MainActivity : AppCompatActivity() {
                 createAndJoinCeler()
             }
 
-            override fun onFailure() {
-                showTips("getTokenFromFaucet error ")
+            override fun onFailure(error: String) {
+                showTips("getTokenFromFaucet error $error")
 
                 handler.post {
                     progressBar.visibility = View.GONE
