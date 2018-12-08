@@ -1,14 +1,9 @@
 package com.celer.joincelersample
 
 import android.content.Context
-import android.util.Log
-import com.android.volley.AuthFailureError
-import com.android.volley.NetworkResponse
-import com.android.volley.Request
-import com.android.volley.Response
-import com.android.volley.toolbox.HttpHeaderParser
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
+import okhttp3.Callback
+import okhttp3.OkHttpClient
+import java.io.IOException
 
 
 class FaucetHelper {
@@ -21,52 +16,33 @@ class FaucetHelper {
 
     }
 
+
     // var faucetURL = "http://54.188.217.246:3008/donate/"
     fun getTokenFromPrivateNetFaucet(context: Context, faucetURL: String, walletAddress: String, faucetCallBack: FaucetCallBack) {
 
-        val requestQueue = Volley.newRequestQueue(context)
-        val stringRequest = object : StringRequest(Request.Method.GET, "$faucetURL$walletAddress",
-                Response.Listener {
 
-                    response ->
-                    Log.i("VOLLEY", response)
+        var okHttpClient = OkHttpClient()
+        var request = okhttp3.Request.Builder().url("$faucetURL$walletAddress").method("GET", null).build()
 
-                    if (response == "200") {
-                        faucetCallBack.onSuccess()
-                    } else {
-                        faucetCallBack.onFailure(response)
-                    }
-                },
-                Response.ErrorListener {
-
-                    error ->
-                    Log.e("VOLLEY", error.toString())
-
-                    faucetCallBack.onFailure(error.toString())
-                }) {
-            override fun getBodyContentType(): String {
-                return "application/json; charset=utf-8"
+        var call = okHttpClient.newCall(request)
+        call.enqueue(object : Callback {
+            override fun onFailure(call: okhttp3.Call, e: IOException) {
+                faucetCallBack.onFailure(e.toString())
             }
 
-            @Throws(AuthFailureError::class)
-            override fun getHeaders(): Map<String, String> {
-                val params = HashMap<String, String>()
-                params["Connection"] = "close"
-
-                return params
-            }
-
-            override fun parseNetworkResponse(response: NetworkResponse): Response<String> {
-                var responseString = ""
-                if (response != null) {
-                    responseString = response.statusCode.toString()
-                    // can get more details such as response.headers
+            override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
+                if (response.code() == 200) {
+                    faucetCallBack.onSuccess()
+                } else {
+                    faucetCallBack.onFailure(response.message())
                 }
-                return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response))
-            }
-        }
 
-        requestQueue.add(stringRequest)
+            }
+
+        })
+
+
     }
+
 
 }
