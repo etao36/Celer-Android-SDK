@@ -11,6 +11,7 @@ object CelerClientAPIHelper {
 
     fun getProfile(context:Context):String{
         return context.getString(R.string.cprofile_private_testnet, KeyStoreHelper.generateFilePath(context))
+        //return context.getString(R.string.cprofile_ropsten, KeyStoreHelper.generateFilePath(context))
     }
 
     fun initCelerClient(keyStoreString: String, passwordStr: String, profile: String): String {
