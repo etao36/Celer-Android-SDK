@@ -9,9 +9,12 @@ object CelerClientAPIHelper {
     private val TAG = "CelerClientAPIHelper"
     private var client: Client? = null
 
-    fun getProfile(context:Context):String{
+    fun getRopstenTestNetProfile(context: Context): String {
+        return context.getString(R.string.cprofile_ropsten, KeyStoreHelper.generateFilePath(context))
+    }
+
+    fun getPrivateTestNetProfile(context: Context): String {
         return context.getString(R.string.cprofile_private_testnet, KeyStoreHelper.generateFilePath(context))
-        //return context.getString(R.string.cprofile_ropsten, KeyStoreHelper.generateFilePath(context))
     }
 
     fun initCelerClient(keyStoreString: String, passwordStr: String, profile: String): String {
@@ -53,7 +56,7 @@ object CelerClientAPIHelper {
 
     fun sendPayment(receiverAddress: String, transferAmount: String): String {
         try {
-            client?.sendPay(receiverAddress, transferAmount)
+            client?.sendPay(receiverAddress.replace("0x", "").toLowerCase(), "0000000000000000000000000000000000000000", transferAmount)
             return "Send payment: successful"
         } catch (e: Exception) {
             Log.d(TAG, "send PaymentError: ${e.localizedMessage}")

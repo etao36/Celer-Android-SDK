@@ -12,8 +12,8 @@ import android.text.method.ScrollingMovementMethod
 class OffChainPaymentActivity : AppCompatActivity() {
 
     private val TAG = "OffChainPaymentActivity"
-    private val clientSideDepositAmount = "5" // 5 WEI
-    private val serverSideDepositAmount = "15" // 15 WEI
+    private val clientSideDepositAmount = "5000" // 5000 WEI
+    private val serverSideDepositAmount = "15000" // 150000 WEI
     var handler: Handler = Handler()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,12 +39,29 @@ class OffChainPaymentActivity : AppCompatActivity() {
 
         //step 2: Get token from faucet
         getTokenFromFaucetButton?.setOnClickListener {
-            FaucetHelper().getTokenFromPrivateNetFaucet(context = this,
+
+
+            /*FaucetHelper().getTokenFromPrivateTestNetFaucet(context = this,
                     faucetURL = "http://54.188.217.246:3008/donate/",
                     walletAddress = KeyStoreHelper.getAddress(),
                     faucetCallBack = object : FaucetHelper.FaucetCallBack {
                         override fun onSuccess() {
                             showLog("Step 2: getTokenFromFaucet success, wait for transaction to complete")
+                        }
+
+                        override fun onFailure() {
+                            showLog("getTokenFromFaucet error")
+                        }
+                    })*/
+
+
+            FaucetHelper().getTokenFromRopstenTestNetFaucet(context = this,
+                    faucetURL = "https://faucet.metamask.io",
+                    walletAddress = KeyStoreHelper.getAddress(),
+                    faucetCallBack = object : FaucetHelper.FaucetCallBack {
+                        override fun onSuccess() {
+                            showLog("Step 2: getTokenFromFaucet success, wait for transaction to complete. \nYou need to have enough balance before joining Celer. \nIf you are using Ropsten, " +
+                                    "you can check status on https://ropsten.etherscan.io/address/${KeyStoreHelper.getAddress()}")
                         }
 
                         override fun onFailure() {
@@ -58,12 +75,13 @@ class OffChainPaymentActivity : AppCompatActivity() {
             val result = CelerClientAPIHelper.initCelerClient(
                     keyStoreString = KeyStoreHelper.getKeyStoreString(),
                     passwordStr = KeyStoreHelper.getPassword(),
-                    profile = CelerClientAPIHelper.getProfile(this))
+                    profile = CelerClientAPIHelper.getRopstenTestNetProfile(this))
             showLog("Step 3: $result")
         }
 
         //step 4: Join Celer
         joinCelerButton?.setOnClickListener {
+            showLog("Step 4. Joining Celer... It is an on-chain operation and takes up to 8 mins. Please wait patiently.")
             val result = CelerClientAPIHelper.joinCeler(clientSideDepositAmount, serverSideDepositAmount)
             showLog("Step 4: $result")
             if (result.contains("successful")) {

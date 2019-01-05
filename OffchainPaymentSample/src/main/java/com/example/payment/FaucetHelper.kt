@@ -18,7 +18,7 @@ class FaucetHelper {
 
     }
 
-    fun getTokenFromPrivateNetFaucet(context: Context, faucetURL: String, walletAddress: String, faucetCallBack: FaucetCallBack) {
+    fun getTokenFromPrivateTestNetFaucet(context: Context, faucetURL: String, walletAddress: String, faucetCallBack: FaucetCallBack) {
 
         val requestQueue = Volley.newRequestQueue(context)
 
@@ -58,7 +58,7 @@ class FaucetHelper {
         requestQueue.add(stringRequest)
     }
 
-    fun getTokenFromFaucet(context: Context, faucetURL: String, walletAddress: String, faucetCallBack: FaucetCallBack) {
+    fun getTokenFromRopstenTestNetFaucet(context: Context, faucetURL: String, walletAddress: String, faucetCallBack: FaucetCallBack) {
 
         val requestQueue = Volley.newRequestQueue(context)
 
