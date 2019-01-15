@@ -139,26 +139,26 @@ object CelerClientAPIHelper {
 
     }
 
-    fun sendPaymentWithConditions(amount: String, indexOpponent: Int) {
-        val booleanCondition = BooleanCondition()
-        booleanCondition.timeout = 500
-        booleanCondition.sessionID = sessionId
-        val argsForQueryResult = byteArrayOf(1)
-        argsForQueryResult[0] = indexOpponent.toByte()
-        booleanCondition.argsForQueryResult = argsForQueryResult
-
-        Log.e(TAG, "sendPayWithCondtions: argsForQueryResult[0]: ${argsForQueryResult[0]}")
-
-        try {
-            client?.sendPayWithConditions(opponentAddress, amount, booleanCondition)
-            Log.e(TAG, "sendPay: sent")
-        } catch (e: Exception) {
-            Log.e(TAG, "sendPayWithConditions Error: ${e.localizedMessage}")
-
-        }
-
-
-    }
+//    fun sendPaymentWithConditions(amount: String, indexOpponent: Int) {
+//        val booleanCondition = BooleanCondition()
+//        booleanCondition.timeout = 500
+//        booleanCondition.sessionID = sessionId
+//        val argsForQueryResult = byteArrayOf(1)
+//        argsForQueryResult[0] = indexOpponent.toByte()
+//        booleanCondition.argsForQueryResult = argsForQueryResult
+//
+//        Log.e(TAG, "sendPayWithCondtions: argsForQueryResult[0]: ${argsForQueryResult[0]}")
+//
+//        try {
+//            client?.sendPayWithConditions(opponentAddress, amount,"", booleanCondition)
+//            Log.e(TAG, "sendPay: sent")
+//        } catch (e: Exception) {
+//            Log.e(TAG, "sendPayWithConditions Error: ${e.localizedMessage}")
+//
+//        }
+//
+//
+//    }
 
     fun sendState(state: ByteArray) {
         Log.e(TAG, "sessionId : $sessionId")

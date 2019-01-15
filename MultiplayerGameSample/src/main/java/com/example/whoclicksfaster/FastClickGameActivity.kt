@@ -100,6 +100,10 @@ class FastClickGameActivity : AppCompatActivity() {
     }
 
     private var callback = object : CAppCallback {
+        override fun onCondPayUpdate() {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
+
         override fun onStatusChanged(status: Long) {
             Log.d(TAG, "createNewCAppSession onStatusChanged : $status")
         }

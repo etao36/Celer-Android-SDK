@@ -7,7 +7,7 @@ import network.celer.geth.KeyStore
 import java.io.File
 
 object KeyStoreHelper {
-    private val password = "CelerNetwork"
+    private val password = "CelerNetwork—JimTao"
     private var gethKeyStore: KeyStore? = null
     private var account: Account? = null
     private var keyStoreString: String = ""
